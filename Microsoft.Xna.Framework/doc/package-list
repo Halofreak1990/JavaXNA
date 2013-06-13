@@ -1,0 +1,14 @@
+Microsoft.Xna.Framework
+Microsoft.Xna.Framework.Audio
+Microsoft.Xna.Framework.Content
+Microsoft.Xna.Framework.GamerServices
+Microsoft.Xna.Framework.Graphics
+Microsoft.Xna.Framework.Graphics.PackedVector
+Microsoft.Xna.Framework.Input
+Microsoft.Xna.Framework.Input.Touch
+Microsoft.Xna.Framework.Net
+System
+System.Collections.Generic
+System.Collections.ObjectModel
+System.IO
+System.Runtime.InteropServices

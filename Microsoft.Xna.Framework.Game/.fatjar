@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Thu Aug 02 12:30:45 CEST 2012
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=C\:\\JavaXNA\\Microsoft.Xna.Framework.Game.jar
+manifest.mergeall=true
+manifest.mainclass=
+manifest.file=<createnew>
+jarname.isextern=true
+onejar.expand=
+excludes=<po|Microsoft.Xna.Framework>;<jar|jinput.jar>
+includes=
