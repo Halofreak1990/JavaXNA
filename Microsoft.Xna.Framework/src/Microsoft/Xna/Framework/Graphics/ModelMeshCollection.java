@@ -13,13 +13,9 @@ import System.Collections.ObjectModel.*;
  */
 public final class ModelMeshCollection extends ReadOnlyCollection<ModelMesh>
 {
-	ModelMesh[] wrappedArray;
-	
-	ModelMeshCollection(ModelMesh[] array)
+	ModelMeshCollection(List<ModelMesh> meshes)
 	{
-		super(Arrays.asList(array));
-		
-		this.wrappedArray = array;
+		super(meshes);
 	}
 	
 	/**
@@ -43,7 +39,7 @@ public final class ModelMeshCollection extends ReadOnlyCollection<ModelMesh>
 	 */
 	public ModelMeshCollectionIterator iterator()
 	{
-		return new ModelMeshCollectionIterator(this.wrappedArray);
+		return new ModelMeshCollectionIterator(this);
 	}
 	
 	/**
@@ -83,12 +79,12 @@ public final class ModelMeshCollection extends ReadOnlyCollection<ModelMesh>
 	 */
 	public final class ModelMeshCollectionIterator implements Iterator<ModelMesh>
 	{
-		private ModelMesh[] wrappedArray;
+		private ModelMeshCollection parent;
 		private int position;
 		
-		ModelMeshCollectionIterator(ModelMesh[] wrappedArray)
+		ModelMeshCollectionIterator(ModelMeshCollection modelMeshCollection)
 		{
-			this.wrappedArray = wrappedArray;
+			this.parent = modelMeshCollection;
 			this.position = -1;
 		}
 		
@@ -99,9 +95,9 @@ public final class ModelMeshCollection extends ReadOnlyCollection<ModelMesh>
 		public boolean hasNext()
 		{
 			this.position++;
-			if (this.position >= wrappedArray.length)
+			if (this.position >= parent.Count())
 			{
-				this.position = wrappedArray.length;
+				this.position = parent.Count() - 1;
 				return false;
 			}
 			return true;
@@ -113,7 +109,7 @@ public final class ModelMeshCollection extends ReadOnlyCollection<ModelMesh>
 		@Override
 		public ModelMesh next()
 		{
-			return this.wrappedArray[this.position];
+			return parent.get(this.position);
 		}
 
 		@Override

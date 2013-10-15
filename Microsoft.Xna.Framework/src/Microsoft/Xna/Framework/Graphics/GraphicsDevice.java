@@ -27,35 +27,34 @@ public class GraphicsDevice implements IDisposable
 	DepthStencilState cachedDepthStencilState;
 	ProfileCapabilities _profileCapabilities;
 	boolean isDisposed;
-    private PresentationParameters pPublicCachedParams;
-    private TextureCollection textures;
-	DeclarationManager vertexDeclarationManager;
+	private PresentationParameters pPublicCachedParams;
+	private TextureCollection textures;
 	private Viewport viewport;
 	private RenderTargetBinding[] renderTargets;
 	private int frameBufferIdentifier;
 	private IndexBuffer currentIndexBuffer;
 	private int currentRenderTargetCount;
-	
+
 	/**
 	 * 
 	 */
 	public final Event<EventArgs> DeviceLost = new Event<EventArgs>();
-	
+
 	/**
 	 * 
 	 */
 	public final Event<EventArgs> DeviceReset = new Event<EventArgs>();
-	
+
 	/**
 	 * 
 	 */
 	public final Event<EventArgs> DeviceResetting = new Event<EventArgs>();
-	
+
 	/**
 	 * 
 	 */
 	public final Event<EventArgs> Disposing = new Event<EventArgs>();
-	
+
 	/**
 	 * 
 	 */
@@ -65,7 +64,7 @@ public class GraphicsDevice implements IDisposable
 	 * 
 	 */
 	public final Event<ResourceDestroyedEventArgs> ResourceDestroyed = new Event<ResourceDestroyedEventArgs>();   
-	
+
 	/**
 	 * 
 	 */
@@ -73,7 +72,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		return this.adapter;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -81,7 +80,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		return this.cachedBlendFactor;
 	}
-	
+
 	/**
 	 * 
 	 * @param value
@@ -100,7 +99,7 @@ public class GraphicsDevice implements IDisposable
 		
 		this.cachedBlendFactor = value;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -108,13 +107,13 @@ public class GraphicsDevice implements IDisposable
 	{
 		return _graphicsProfile;
 	}
-	
+
 	boolean IsDeviceLost()
 	{
 		// TODO: implement
 		return false;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -132,7 +131,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		// TODO Auto-generated method stub
 	}
-	
+
 	/**
 	 * Gets the presentation parameters associated with this graphics device.
 	 */
@@ -140,7 +139,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		return this.pPublicCachedParams;
 	}
-	
+
 	private void setPresentationParameters(PresentationParameters presentationParameters)
 	{
 		if (presentationParameters.BackBufferFormat == SurfaceFormat.Color)
@@ -148,7 +147,7 @@ public class GraphicsDevice implements IDisposable
 			
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -157,7 +156,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		return this.textures;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -166,7 +165,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		return viewport;
 	}
-	
+
 	/**
 	 * 
 	 * @param value
@@ -176,7 +175,7 @@ public class GraphicsDevice implements IDisposable
 		viewport = value;
 		GL11.glViewport(value.X, value.Y, value.Width, value.Height);
 	}
-	
+
 	/**
 	 * 
 	 * @param adapter
@@ -189,23 +188,27 @@ public class GraphicsDevice implements IDisposable
 	public GraphicsDevice(GraphicsAdapter adapter, GraphicsProfile profile, PresentationParameters presentationParameters)
 	{
 		if(presentationParameters == null)
+		{
 			throw new ArgumentNullException("presentationParameters", "This method does not accept null for this parameter.");
-		
+		}
+
 		if (adapter == null)
+		{
 			throw new ArgumentNullException("adapter", "This method does not accept null for this parameter.");
-		
+		}
+
 		this.adapter = adapter;
 		this._graphicsProfile = profile;
 		this._profileCapabilities = ProfileCapabilities.GetInstance(profile);
 		this.pPublicCachedParams = presentationParameters.Clone();
 		this.renderTargets = new RenderTargetBinding[_profileCapabilities.MaxRenderTargets];
-		
+
 		this.CreateDevice(adapter, presentationParameters);
-		
+
 		this.textures = new TextureCollection();
 		this.clearColor = Color.Black;
 	}
-	
+
 	/**
 	 * 
 	 * @param color
@@ -213,16 +216,16 @@ public class GraphicsDevice implements IDisposable
 	public void Clear(Color color)
 	{
 		GL11.glClearColor((float)color.R()/255f, (float)color.G()/255f, (float)color.B()/255f, (float)color.A()/255f);
-		
+
 		if (color != clearColor)
 		{
 			clearColor = color;
 		}
-		
+
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		GL11.glLoadIdentity();
 	}
-	
+
 	/**
 	 * 
 	 * @param options
@@ -233,29 +236,32 @@ public class GraphicsDevice implements IDisposable
 	public void Clear(EnumSet<ClearOptions> options, Color color, float depth, int stencil)
 	{
 		GL11.glClearColor((float)color.R()/255f, (float)color.G()/255f, (float)color.B()/255f, (float)color.A()/255f);
-		
+
 		if (color != clearColor)
 		{
 			clearColor = color;
 		}
-	
+
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-		
+
 		if (options.contains(ClearOptions.DepthBuffer))
 		{
 			GL11.glClearDepth(depth);
 		}
+
 		if (options.contains(ClearOptions.Stencil))
 		{
 			GL11.glClearStencil(stencil);
 		}
+
 		if (options.contains(ClearOptions.Target))
 		{
 			// TODO: clear the current render target
 		}
+
 		GL11.glLoadIdentity();
 	}
-	
+
 	/**
 	 * 
 	 * @param options
@@ -268,27 +274,27 @@ public class GraphicsDevice implements IDisposable
 		Color color2 = new Color(color);
 		this.Clear(options, color2, depth, stencil);
 	}
-	
+
 	void ClearBlendState()
 	{
 		this.cachedBlendState = null;
 		this.cachedBlendFactor = BlendState.Opague.cachedBlendFactor;
 	}
-	
+
 	void ClearDepthStencilState()
 	{
 		this.cachedDepthStencilState = null;
 	}
-	
+
 	private void ClearDirtyBuffers()
 	{
 		
 	}
-	
+
 	void ClearRasterizerState()
 	{
 	}
-	
+
 	private void CreateDevice(GraphicsAdapter adapter, PresentationParameters presentationParameters)
 	{
 		try
@@ -297,7 +303,7 @@ public class GraphicsDevice implements IDisposable
 			Display.setDisplayMode(new DisplayMode(presentationParameters.BackBufferWidth, presentationParameters.BackBufferHeight));
 			Display.setFullscreen(presentationParameters.IsFullScreen);
 			Display.create();
-			
+
 			IntBuffer buffer = ByteBuffer.allocateDirect(1*4).asIntBuffer(); 
 			EXTFramebufferObject.glGenFramebuffersEXT(buffer);
 			this.frameBufferIdentifier = buffer.get(0);
@@ -317,7 +323,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		Dispose(true);
 	}
-	
+
 	/**
 	 * 
 	 * @param disposing
@@ -325,10 +331,10 @@ public class GraphicsDevice implements IDisposable
 	protected void Dispose(boolean disposing)
 	{
 		EXTFramebufferObject.glDeleteFramebuffersEXT(frameBufferIdentifier);
-		
+
 		Display.destroy();
 	}
-	
+
 	/**
 	 * Renders the specified geometric primitive, based on indexing into an array of vertices.
 	 * 
@@ -354,7 +360,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		// TODO: implement
 	}
-	
+
 	/**
 	 * Draws a series of instanced models.
 	 * 
@@ -383,7 +389,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		// TODO: implement
 	}
-	
+
 	/**
 	 * Renders a sequence of non-indexed geometric primitives of the specified type from the current set of data input streams.
 	 * 
@@ -400,7 +406,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		// TODO: implement
 	}
-	
+
 	/**
 	 * Renders indexed primitives from a 32-bit index buffer and other related input parameters.
 	 * 
@@ -429,7 +435,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		// TODO: implement
 	}
-	
+
 	/**
 	 * 
 	 * @param <T>
@@ -446,7 +452,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		// TODO: implement
 	}
-	
+
 	/**
 	 * 
 	 * @param <T>
@@ -462,7 +468,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		// TODO: implement
 	}
-	
+
 	/**
 	 * 
 	 * @param <T>
@@ -479,7 +485,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		// TODO: implement
 	}
-	
+
 	/**
 	 * 
 	 * @param <T>
@@ -492,7 +498,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		// TODO: implement
 	}
-	
+
 	/**
 	 * 
 	 * @param <T>
@@ -506,7 +512,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		// TODO: implement
 	}
-	
+
 	/**
 	 * 
 	 * @param <T>
@@ -521,10 +527,10 @@ public class GraphicsDevice implements IDisposable
 		{
 			this._profileCapabilities.ThrowNotSupportedException("JavaXNA Framework %1$ does not support %2$.", "GetBackBufferData");
 		}
-		
+
 		// TODO: implement
 	}
-	
+
 	/**
 	 * 
 	 * @param <T>
@@ -541,10 +547,11 @@ public class GraphicsDevice implements IDisposable
 		{
 			length = 0;
 		}
+
 		Rectangle rect = null;
 		this.GetBackBufferData(rect, data, 0, length);
 	}
-	
+
 	/**
 	 * 
 	 * @param <T>
@@ -556,46 +563,51 @@ public class GraphicsDevice implements IDisposable
 	{
 		GetBackBufferData(null, data, startIndex, elementCount);
 	}
-	
+
 	private int getColorAttachment(int index)
 	{
 		if (index < 0 || index > _profileCapabilities.MaxRenderTargets)
+		{
 			throw new NotSupportedException("The index is out of range.");
-		
-		if (index == 0)
+		}
+
+		switch (index)
+		{
+		case 0:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT0_EXT;
-		else if (index == 1)
+		case 1:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT1_EXT;
-		else if (index == 2)
+		case 2:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT2_EXT;
-		else if (index == 3)
+		case 3:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT3_EXT;
-		else if (index == 4)
+		case 4:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT4_EXT;
-		else if (index == 5)
+		case 5:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT5_EXT;
-		else if (index == 6)
+		case 6:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT6_EXT;
-		else if (index == 7)
+		case 7:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT7_EXT;
-		else if (index == 8)
+		case 8:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT8_EXT;
-		else if (index == 9)
+		case 9:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT9_EXT;
-		else if (index == 10)
+		case 10:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT10_EXT;
-		else if (index == 11)
+		case 11:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT11_EXT;
-		else if (index == 12)
+		case 12:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT12_EXT;
-		else if (index == 13)
+		case 13:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT13_EXT;
-		else if (index == 14)
+		case 14:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT14_EXT;
-		else
+		default:
 			return EXTFramebufferObject.GL_COLOR_ATTACHMENT15_EXT;
+		}
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -614,11 +626,11 @@ public class GraphicsDevice implements IDisposable
 	public void Present()
 	{
 		Display.processMessages();
-		
+
 		try { Display.swapBuffers(); }
 		catch (LWJGLException e) { e.printStackTrace(); }
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -626,7 +638,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		this.Reset(getPresentationParameters(), getAdapter());
 	}
-	
+
 	/**
 	 * 
 	 * @param presentationParameters
@@ -635,7 +647,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		this.Reset(presentationParameters, this.getAdapter());
 	}
-	
+
 	/**
 	 * 
 	 * @param presentationParameters
@@ -644,14 +656,18 @@ public class GraphicsDevice implements IDisposable
 	public void Reset(PresentationParameters presentationParameters, GraphicsAdapter adapter)
 	{
 		if (DeviceResetting.hasHandlers())
+		{
 			DeviceResetting.raise(this, EventArgs.Empty);
-		
+		}
+
 		setPresentationParameters(presentationParameters);
-		
+
 		if (DeviceReset.hasHandlers())
+		{
 			DeviceReset.raise(this, EventArgs.Empty);
+		}
 	}
-	
+
 	/**
 	 * Sets a new render target for this GraphicsDevice.
 	 * 
@@ -669,13 +685,13 @@ public class GraphicsDevice implements IDisposable
 //			if (--numActiveRenderTargets == 0)
 //				EXTFramebufferObject.glBindFramebufferEXT(EXTFramebufferObject.GL_FRAMEBUFFER_EXT, 0); 
 		}
-	
+
 		if (renderTarget.isDisposed)
 		{
 			throw new ObjectDisposedException(renderTarget.getClass().getName() ,"SetRenderTarget is called after the render target has been disposed.");
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param renderTarget
@@ -693,7 +709,7 @@ public class GraphicsDevice implements IDisposable
 			this.SetRenderTargets(null, 0);
 		}
 	}
-	
+
 	/**
 	 * Sets an array of RenderTargets.
 	 * 
@@ -711,7 +727,7 @@ public class GraphicsDevice implements IDisposable
 			this.SetRenderTargets(null, 0);
 		}
 	}
-	
+
 	private void SetRenderTargets(RenderTargetBinding[] bindings, int renderTargetCount)
 	{
 		
@@ -727,7 +743,7 @@ public class GraphicsDevice implements IDisposable
 	{
 		// TODO: implement
 	}
-	
+
 	/**
 	 * 
 	 * @param vertexBuffer

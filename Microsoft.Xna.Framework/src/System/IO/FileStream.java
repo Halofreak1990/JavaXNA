@@ -245,13 +245,19 @@ public class FileStream extends Stream
 	public void Write(byte[] buffer, int offset, int count)
 	{
 		if (buffer == null)
+		{
 			throw new ArgumentNullException("buffer", "Buffer cannot be null.");
+		}
 		
 		if (offset < 0)
+		{
 			throw new ArgumentOutOfRangeException("offset", "Non-negative number required.");
+		}
 		
 		if (count < 0)
+		{
 			throw new ArgumentOutOfRangeException("count", "Non-negative number required.");
+		}
 		
 		if (!CanWrite())
 		{

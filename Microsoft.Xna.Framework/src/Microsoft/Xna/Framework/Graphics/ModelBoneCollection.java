@@ -3,6 +3,7 @@ package Microsoft.Xna.Framework.Graphics;
 import java.util.*;
 
 import System.*;
+import System.Collections.Generic.KeyNotFoundException;
 import System.Collections.ObjectModel.*;
 
 /**
@@ -11,14 +12,10 @@ import System.Collections.ObjectModel.*;
  * @author Halofreak1990
  */
 public final class ModelBoneCollection extends ReadOnlyCollection<ModelBone>
-{
-	ModelBone[] wrappedArray;
-	
-	ModelBoneCollection(ModelBone[] array)
+{	
+	ModelBoneCollection(List<ModelBone> bones)
 	{
-		super(Arrays.asList(array));
-		
-		this.wrappedArray = array;
+		super(bones);
 	}
 	
 	/**
@@ -29,7 +26,12 @@ public final class ModelBoneCollection extends ReadOnlyCollection<ModelBone>
 	 */
 	public ModelBone get(String boneName)
 	{
-		throw new NotImplementedException();
+		ModelBone bone = null;
+		if (!TryGetValue(boneName, bone))
+		{
+			throw new KeyNotFoundException();
+		}
+		return bone;
 	}
 	
 	/**

@@ -27,4 +27,10 @@ public abstract class Texture extends GraphicsResource
 	{
 		return _levelCount;
 	}
+
+	boolean IsActiveRenderTarget()
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

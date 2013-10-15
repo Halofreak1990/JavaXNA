@@ -7,8 +7,11 @@ Microsoft.Xna.Framework.Graphics.PackedVector
 Microsoft.Xna.Framework.Input
 Microsoft.Xna.Framework.Input.Touch
 Microsoft.Xna.Framework.Net
+Microsoft.Xna.Framework.Storage
 System
 System.Collections.Generic
 System.Collections.ObjectModel
 System.IO
+System.IO.IsolatedStorage
 System.Runtime.InteropServices
+System.Security

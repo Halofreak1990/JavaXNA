@@ -90,7 +90,9 @@ public class Texture2D extends Texture
     public Texture2D(GraphicsDevice graphicsDevice, int width, int height, boolean mipMap, SurfaceFormat format)
     {
     	if (graphicsDevice == null)
+    	{
     		throw new ArgumentNullException("graphicsDevice");
+    	}
     	
     	ValidateCreationParameters(graphicsDevice._graphicsProfile, width, height, mipMap, format);
     	

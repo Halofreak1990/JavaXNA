@@ -51,7 +51,9 @@ public final class TextureCollection
 			{
 				Texture[] textureArray = (Texture[]) textures.toArray();
 				for (Texture texture : textureArray)
+				{
 					texture.Dispose();
+				}
 				textures.clear();
 			}
 		}

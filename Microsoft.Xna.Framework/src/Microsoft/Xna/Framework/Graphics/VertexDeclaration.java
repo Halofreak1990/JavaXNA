@@ -111,10 +111,10 @@ public class VertexDeclaration extends GraphicsResource
         DeclarationBinding binding = this._binding;
         if (binding != null)
         {
-            super._parent.vertexDeclarationManager.ReleaseBinding(binding);
+            //super._parent.vertexDeclarationManager.ReleaseBinding(binding);
             this._binding = null;
         }
-        this._binding = device.vertexDeclarationManager.CreateBinding(this);
+        //this._binding = device.vertexDeclarationManager.CreateBinding(this);
         super._parent = device;
     }
 
@@ -122,10 +122,14 @@ public class VertexDeclaration extends GraphicsResource
 	static VertexDeclaration FromType(Class vertexType)
 	{
     	if (vertexType == null)
+    	{
     		throw new ArgumentNullException("vertexType", "This method does not allow null for this parameter.");
+    	}
     	
 		if (!(vertexType.isPrimitive()))
+		{
 			throw new ArgumentException(String.format(Locale.getDefault(), "Invalid vertex type. %s is not a value type.", vertexType.toString()));
+		}
 		
 		return null;
 	}

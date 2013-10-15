@@ -53,7 +53,9 @@ public abstract class KeyedCollection<TKey, TItem> extends Collection<TItem>
 	public TItem get(TKey key)
 	{
 		if (key == null)
+		{
 			throw new ArgumentNullException("key");
+		}
 		
 		if (this.dict != null)
 		{

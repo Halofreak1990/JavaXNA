@@ -27,10 +27,14 @@ public class IsolatedStorageFileStream extends FileStream
 	public IsolatedStorageFileStream(String path, FileMode mode, EnumSet<FileAccess> access, EnumSet<FileShare> share, IsolatedStorageFile isf)
 	{
 		if (path == null)
+		{
 			throw new IsolatedStorageException();
+		}
 		
 		if (isf == null)
+		{
 			throw new IsolatedStorageException();
+		}
 		
 		// strip all leading ../ or ..\ from path to prevent programmers from being clever and going outside the IsolatedStorage area.
 		path.replaceAll("", "");
@@ -287,6 +291,6 @@ public class IsolatedStorageFileStream extends FileStream
 	{
 		byte[] buf = new byte[] { value };
 		
-		Write(buf, 0, 1);
+		Write(buf, 0, buf.length);
 	}
 }

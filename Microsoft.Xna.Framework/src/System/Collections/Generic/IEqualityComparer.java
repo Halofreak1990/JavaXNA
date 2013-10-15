@@ -20,7 +20,7 @@ public interface IEqualityComparer<T>
 	 * <code>true</code> if the specified objects are equal; otherwise, <code>false</code>.
 	 */
 	public boolean equals(T x, T y);
-	
+
 	/**
 	 * Returns a hash code for the specified object.
 	 * 

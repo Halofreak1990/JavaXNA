@@ -15,7 +15,7 @@ public class TextureCube extends Texture
 	/**
 	 * 
 	 */
-	public int Size()
+	public int getSize()
 	{
 		return _size;
 	}
@@ -62,6 +62,7 @@ public class TextureCube extends Texture
 	 * @param data
 	 * 
 	 * @throws ArgumentNullException
+	 * data is null.
 	 */
 	public <T extends Number> void GetData(CubeMapFace cubeMapFace, T[] data)
 	{
@@ -77,6 +78,7 @@ public class TextureCube extends Texture
 	 * @param elementCount
 	 * 
 	 * @throws ArgumentNullException
+	 * data is null.
 	 */
 	public <T extends Number> void GetData(CubeMapFace cubeMapFace, T[] data, int startIndex, int elementCount)
 	{
@@ -94,11 +96,16 @@ public class TextureCube extends Texture
 	 * @param elementCount
 	 * 
 	 * @throws ArgumentNullException
+	 * data is null.
 	 */
 	public <T extends Number> void GetData(CubeMapFace cubeMapFace, int level, Rectangle rect, T[] data, int startIndex, int elementCount)
 	{
 		if (data == null)
+		{
 			throw new ArgumentNullException("data", "Buffer cannot be null.");
+		}
+		
+		throw new NotImplementedException();
 	}
 	
 	/**
@@ -125,6 +132,7 @@ public class TextureCube extends Texture
 	 * @param elementCount
 	 * 
 	 * @throws ArgumentNullException
+	 * data is null
 	 */
 	public <T extends Number> void SetData(CubeMapFace cubeMapFace, T[] data, int startIndex, int elementCount)
 	{
@@ -143,10 +151,15 @@ public class TextureCube extends Texture
 	 * @param elementCount
 	 * 
 	 * @throws ArgumentNullException
+	 * data is null
 	 */
 	public <T extends Number> void SetData(CubeMapFace cubeMapFace, int level, Rectangle rect, T[] data, int startIndex, int elementCount)
 	{
 		if (data == null)
+		{
 			throw new ArgumentNullException("data", "Buffer cannot be null.");
+		}
+		
+		throw new NotImplementedException();
 	}
 }

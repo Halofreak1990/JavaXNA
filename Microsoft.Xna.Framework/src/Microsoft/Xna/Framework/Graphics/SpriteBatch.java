@@ -1,5 +1,6 @@
 package Microsoft.Xna.Framework.Graphics;
 
+import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.*;
 import org.lwjgl.opengl.*;
@@ -35,7 +36,9 @@ public class SpriteBatch extends GraphicsResource
 	public SpriteBatch(GraphicsDevice graphics)
 	{
 		if (graphics == null)
+		{
 			throw new ArgumentNullException("graphics");
+		}
 		
 		this._parent = graphics;
 	}
@@ -78,7 +81,7 @@ public class SpriteBatch extends GraphicsResource
 		
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		
-		IntBuffer viewport = IntBuffer.allocate(4);
+		IntBuffer viewport = ByteBuffer.allocateDirect(64).asIntBuffer();
 		GL11.glGetInteger(GL11.GL_VIEWPORT, viewport);
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glPushMatrix();
@@ -94,7 +97,15 @@ public class SpriteBatch extends GraphicsResource
 	 */
 	public void Begin()
 	{
-		this.Begin(SpriteSortMode.Deferred, null, null, null, null, null, Matrix.getIdentity());
+		this.Begin(
+			SpriteSortMode.Deferred, 
+			BlendState.AlphaBlend, 
+			SamplerState.LinearClamp, 
+			DepthStencilState.None, 
+			RasterizerState.CullCounterClockwise, 
+			null, 
+			Matrix.getIdentity()
+		);
 	}
 	
 	/**
@@ -108,7 +119,15 @@ public class SpriteBatch extends GraphicsResource
 	 */
 	public void Begin(SpriteSortMode sortMode, BlendState blendState)
 	{
-		this.Begin(sortMode, blendState, null, null, null, null, Matrix.getIdentity());
+		this.Begin(
+			sortMode,
+			blendState,
+			SamplerState.LinearClamp,
+			DepthStencilState.None,
+			RasterizerState.CullCounterClockwise,
+			null,
+			Matrix.getIdentity()
+		);
 	}
 	
 	/**
@@ -131,7 +150,15 @@ public class SpriteBatch extends GraphicsResource
 	 */
 	public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState)
 	{
-		this.Begin(sortMode, blendState, samplerState, depthStencilState, rasterizerState, null, Matrix.getIdentity());
+		this.Begin(
+			sortMode, 
+			blendState,
+			samplerState == null ? SamplerState.LinearClamp : samplerState,
+			depthStencilState,
+			rasterizerState == null ? RasterizerState.CullCounterClockwise : rasterizerState,
+			null,
+			Matrix.getIdentity()
+		);
 	}
 	
 	/**
@@ -157,7 +184,15 @@ public class SpriteBatch extends GraphicsResource
 	 */
 	public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect)
 	{
-		this.Begin(sortMode, blendState, samplerState, depthStencilState, rasterizerState, effect, Matrix.getIdentity());
+		this.Begin(
+			sortMode, 
+			blendState, 
+			samplerState == null ? SamplerState.LinearClamp : samplerState, 
+			depthStencilState, 
+			rasterizerState == null ? RasterizerState.CullCounterClockwise : rasterizerState, 
+			effect, 
+			Matrix.getIdentity()
+		);
 	}
 	
 	/**
@@ -187,15 +222,19 @@ public class SpriteBatch extends GraphicsResource
 	public void Begin(SpriteSortMode sortMode, BlendState blendState, SamplerState samplerState, DepthStencilState depthStencilState, RasterizerState rasterizerState, Effect effect, Matrix transformMatrix)
 	{
 		if (isRunning)
+		{
 			throw new InvalidOperationException("Begin cannot be called again until End has been successfully called.");
+		}
 		
 		this.sortMode = sortMode;
-		this.blendState = blendState;
+		this.blendState = blendState == null ? BlendState.AlphaBlend : blendState;
 		this.customEffect = effect;
-		this.depthStencilState = depthStencilState;
+		this.depthStencilState = depthStencilState == null ? DepthStencilState.None : depthStencilState;
 		
 		if (sortMode == SpriteSortMode.Immediate)
+		{
 			applyGraphicsDeviceSettings();
+		}
 		
 		isRunning = true;
 	}
@@ -206,7 +245,9 @@ public class SpriteBatch extends GraphicsResource
 		if (!disposed)
 		{
 			if (Disposing.hasHandlers())
+			{
 				Disposing.raise(this, EventArgs.Empty);
+			}
 			
 			if (disposing)
 			{
@@ -308,13 +349,17 @@ public class SpriteBatch extends GraphicsResource
 	public void Draw(Texture2D texture, Rectangle destinationRectangle, Rectangle sourceRectangle, Color color, float rotation, Vector2 origin, SpriteEffects effects, float layerDepth)
 	{
 		if (!isRunning)
+		{
 			throw new InvalidOperationException("Begin must be called successfully before a Draw can be called.");
+		}
 
 		Sprite sprite = new Sprite(texture, sourceRectangle != null ? sourceRectangle : new Rectangle(0, 0, texture.Width(), texture.Height()), destinationRectangle, color, rotation, origin, effects, layerDepth);
 		spriteList.add(sprite);
 		
 		if (sortMode == SpriteSortMode.Immediate)
+		{
 			flush();
+		}
 	}
 	
 	/**
@@ -460,10 +505,14 @@ public class SpriteBatch extends GraphicsResource
 	{
 		Vector2 vector = Vector2.Zero;
 		if (spriteFont == null)
+		{
 			throw new ArgumentNullException("spriteFont");
+		}
 			
 		if (text == null)
+		{
 			throw new ArgumentNullException("text");
+		}
 		
 		vector.X = scale;
 		vector.Y = scale;
@@ -476,7 +525,9 @@ public class SpriteBatch extends GraphicsResource
 	public void End()
 	{
 		if (!isRunning)
+		{
 			throw new InvalidOperationException("Begin must be called successfully before End can be called.");
+		}
 		
 		if (sortMode != SpriteSortMode.Immediate)
 		{
@@ -499,15 +550,15 @@ public class SpriteBatch extends GraphicsResource
     {
     	switch (sortMode)
     	{
-    		case BackToFront:
-    			Collections.sort(spriteList, new BackToFrontSpriteComparer<Sprite>());
-    			break;
-    		case FrontToBack:
-    			Collections.sort(spriteList, new FrontToBackSpriteComparer<Sprite>());
-    			break;
-    		case Texture:
-    			// nothing here?
-    			break;
+		case BackToFront:
+			Collections.sort(spriteList, new BackToFrontSpriteComparer());
+			break;
+		case FrontToBack:
+			Collections.sort(spriteList, new FrontToBackSpriteComparer());
+			break;
+		case Texture:
+			// nothing here?
+			break;
     	}
 
     	for (Sprite sprite : spriteList)
@@ -520,11 +571,15 @@ public class SpriteBatch extends GraphicsResource
     		// Setup the matrix
     		GL11.glPushMatrix();
     		if ((sprite.DestinationRectangle.X != 0) || (sprite.DestinationRectangle.Y != 0))
+    		{
     			GL11.glTranslatef(sprite.DestinationRectangle.X, sprite.DestinationRectangle.Y, 0f);
+    		}
     		
     		// Position
     		if (sprite.Rotation != 0)
+    		{
     			GL11.glRotatef(MathHelper.ToDegrees(sprite.Rotation), 0f, 0f, 1f);
+    		}
     		
     		// Rotation
     		if ((sprite.DestinationRectangle.Width != 0 && sprite.Origin.X != 0) || (sprite.DestinationRectangle.Height != 0 && sprite.Origin.Y != 0))
@@ -565,27 +620,27 @@ public class SpriteBatch extends GraphicsResource
 			saveState.Apply();*/
 	}
 	
-	private class BackToFrontSpriteComparer <T> implements java.util.Comparator<T>
+	private class BackToFrontSpriteComparer implements java.util.Comparator<Sprite>
 	{
 		@Override
-		public int compare(T x, T y)
+		public int compare(Sprite x, Sprite y)
 		{
-			if (((Sprite)x).LayerDepth > ((Sprite)y).LayerDepth)
+			if (x.LayerDepth > y.LayerDepth)
 				return -1;
-			if (((Sprite)x).LayerDepth < ((Sprite)y).LayerDepth)
+			if (x.LayerDepth < y.LayerDepth)
 				return 1;
 			return 0;  
 		}
 	}
 	
-	private class FrontToBackSpriteComparer <T> implements java.util.Comparator<T>
+	private class FrontToBackSpriteComparer implements java.util.Comparator<Sprite>
 	{
 		@Override
-		public int compare(T x, T y)
+		public int compare(Sprite x, Sprite y)
 		{
-			if (((Sprite)x).LayerDepth < ((Sprite)y).LayerDepth)
+			if (x.LayerDepth < y.LayerDepth)
 				return -1;
-			if (((Sprite)x).LayerDepth > ((Sprite)y).LayerDepth)
+			if (x.LayerDepth > y.LayerDepth)
 				return 1;
 			return 0;  
 		}

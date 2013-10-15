@@ -1,5 +1,7 @@
 package Microsoft.Xna.Framework.Graphics;
 
+import java.util.*;
+
 import System.*;
 import Microsoft.Xna.Framework.*;
 
@@ -10,12 +12,15 @@ import Microsoft.Xna.Framework.*;
  */
 public final class Model
 {
+	List<ModelBone> bones = new ArrayList<ModelBone>();
+	List<ModelMesh> meshes = new ArrayList<ModelMesh>();
+	
 	/**
 	 * Gets a collection of ModelBone objects which describe how each mesh in the Meshes collection for this model relates to its parent mesh.
 	 */
 	public ModelBoneCollection getBones()
 	{
-		throw new NotImplementedException();
+		return new ModelBoneCollection(bones);
 	}
 	
 	/**
@@ -23,7 +28,7 @@ public final class Model
 	 */
 	public ModelMeshCollection getMeshes()
 	{
-		throw new NotImplementedException();
+		return new ModelMeshCollection(meshes);
 	}
 	
 	/**
@@ -31,6 +36,7 @@ public final class Model
 	 */
 	public ModelBone getRoot()
 	{
+		// TODO: implement
 		throw new NotImplementedException();
 	}
 	
@@ -47,7 +53,7 @@ public final class Model
 	 */
 	public void CopyAbsoluteBoneTransformsTo(Matrix[] destinationBoneTransforms)
 	{
-		
+		// TODO: implement		
 	}
 	
 	/**
@@ -58,7 +64,7 @@ public final class Model
 	 */
 	public void CopyBoneTransformsFrom(Matrix[] sourceBoneTransforms)
 	{
-		
+		// TODO: implement		
 	}
 	
 	/**
@@ -69,7 +75,7 @@ public final class Model
 	 */
 	public void CopyBoneTransformsTo(Matrix[] destinationBoneTransforms)
 	{
-		
+		// TODO: implement		
 	}
 	
 	/**
@@ -86,6 +92,6 @@ public final class Model
 	 */
 	public void Draw(Matrix world, Matrix view, Matrix projection)
 	{
-		
+		// TODO: implement
 	}
 }

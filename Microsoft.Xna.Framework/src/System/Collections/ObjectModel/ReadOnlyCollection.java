@@ -28,7 +28,9 @@ public class ReadOnlyCollection<T> implements Iterable<T>
 	public ReadOnlyCollection(List<T> list)
 	{
 		if (list == null)
+		{
 			throw new ArgumentNullException("list");
+		}
 		
 		collection = list;
 	}
@@ -67,7 +69,9 @@ public class ReadOnlyCollection<T> implements Iterable<T>
 	public T get(int index)
 	{
 		if (index < 0 || index > collection.size())
+		{
 			throw new ArgumentOutOfRangeException("index");
+		}
 		
 		return collection.get(index);
 	}
@@ -98,11 +102,15 @@ public class ReadOnlyCollection<T> implements Iterable<T>
 	public void CopyTo(T[] array, int index)
 	{
 		if (array == null)
+		{
 			throw new ArgumentNullException();
+		}
 		
 		// TODO: verify
 		if ((index + collection.size()) > array.length)
+		{
 			throw new ArgumentException("");
+		}
 		
 		System.arraycopy(collection, 0, array, index, collection.size());
 	}

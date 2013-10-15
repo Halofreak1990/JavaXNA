@@ -35,24 +35,24 @@ public class ContentManager implements IDisposable
 		
 		this.rootDirectory = value;
 		/*this.fullRootDirectory = value;
-        this.isRootDirectoryAbsolute = TitleContainer.IsPathAbsolute(value);
-        if (this.isRootDirectoryAbsolute)
-        {
-            try
-            {
-                this.fullRootDirectory = Path.Combine(TitleLocation.Path, value);
-            }
-            catch (RuntimeException ex)
-            {
-            }
-        }*/
+		this.isRootDirectoryAbsolute = TitleContainer.IsPathAbsolute(value);
+		if (this.isRootDirectoryAbsolute)
+		{
+			try
+			{
+				this.fullRootDirectory = Path.Combine(TitleLocation.Path, value);
+			}
+			catch (RuntimeException ex)
+			{
+			}
+		}*/
 	}
-	
+
 	public IServiceProvider getServiceProvider()
 	{
 		return this.serviceProvider;
 	}
-	
+
 	/**
 	 * 
 	 * @param serviceProvider
@@ -62,7 +62,7 @@ public class ContentManager implements IDisposable
 	{
 		this(serviceProvider, "");
 	}
-	
+
 	/**
 	 * 
 	 * @param serviceProvider
@@ -72,16 +72,20 @@ public class ContentManager implements IDisposable
 	public ContentManager(IServiceProvider serviceProvider, String rootDirectory)
 	{
 		if (serviceProvider == null)
+		{
 			throw new ArgumentNullException("serviceProvider");
-		
+		}
+
 		if (rootDirectory == null)
+		{
 			throw new ArgumentNullException("rootDirectory");
-		
+		}
+
 		this.assets = new HashMap<String, Object>();
 		this.rootDirectory = rootDirectory;
 		this.serviceProvider = serviceProvider;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -90,7 +94,7 @@ public class ContentManager implements IDisposable
 	{
 		Dispose(true);
 	}
-	
+
 	protected void Dispose(boolean disposing)
 	{
 		if (!this.disposed)
@@ -100,11 +104,12 @@ public class ContentManager implements IDisposable
 				// Dispose any managed resources
 				Unload();
 			}
+			
 			// Dispose any unmanaged resources
 			this.disposed = true;
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @param <T>
@@ -118,7 +123,7 @@ public class ContentManager implements IDisposable
 	{
 		Class cl = this.getClass();
 		Type t = null;
-		
+
 		try
 		{
 			Method m = cl.getMethod("Load", String.class);
@@ -126,13 +131,17 @@ public class ContentManager implements IDisposable
 		}
 		catch (SecurityException e) { e.printStackTrace(); }
 		catch (NoSuchMethodException e)	{ e.printStackTrace(); }
-		
+
 		if (this.disposed)
+		{
 			throw new ObjectDisposedException(super.toString());
-		
+		}
+
 		if (assetName == null || assetName == "")
+		{
 			throw new ArgumentNullException("assetName");
-		
+		}
+
 		if (this.assets.containsKey(assetName))
 		{
 			try
@@ -148,7 +157,7 @@ public class ContentManager implements IDisposable
 		T asset = this.ReadAsset(assetName, null);
 		return asset;
 	}
-	
+
 	/**
 	 * Low-level worker method that reads asset data.
 	 * 
@@ -168,16 +177,20 @@ public class ContentManager implements IDisposable
 	protected <T> T ReadAsset(String assetName, Action<IDisposable> recordDisposableObject)
 	{
 		if (this.disposed)
+		{
 			throw new ObjectDisposedException(this.getClass().getName());
-		
+		}
+
 		if (assetName == null || assetName == "")
+		{
 			throw new ArgumentNullException("assetName");
-		
+		}
+
 		this.recordDisposableObject = recordDisposableObject;
-		
+
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * 
 	 * @throws ObjectDisposedException
@@ -185,11 +198,13 @@ public class ContentManager implements IDisposable
 	public void Unload()
 	{
 		if (this.disposed)
+		{
 			throw new ObjectDisposedException(this.getClass().getName());
-		
+		}
+
 		Collection<Object> c = assets.values();
 		Iterator<Object> enumerator = c.iterator();
-		
+
 		if (recordDisposableObject != null)
 		{
 			while(enumerator.hasNext())

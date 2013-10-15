@@ -10,12 +10,12 @@ import System.*;
 public class Effect extends GraphicsResource
 {
 	private byte[] byteCode;
-	
+
 	/**
 	 * Gets or sets the active technique.
 	 */
 	public EffectTechnique CurrentTechnique;
-	
+
 	/**
 	 * Gets a collection of parameters used for this effect.
 	 */
@@ -23,7 +23,7 @@ public class Effect extends GraphicsResource
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Gets a collection of techniques that are defined for this effect.
 	 */
@@ -31,7 +31,7 @@ public class Effect extends GraphicsResource
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Creates an instance of this object.
 	 * 
@@ -42,7 +42,7 @@ public class Effect extends GraphicsResource
 	{
 		
 	}
-	
+
 	/**
 	 * Creates an instance of this object.
 	 * 
@@ -55,8 +55,9 @@ public class Effect extends GraphicsResource
 	public Effect(GraphicsDevice graphicsDevice, byte[] byteCode)
 	{
 		super._parent = graphicsDevice;
+		this.byteCode = byteCode;
 	}
-	
+
 	/**
 	 * Releases the unmanaged resources used by the Effect and optionally releases the managed resources.
 	 */
@@ -65,7 +66,7 @@ public class Effect extends GraphicsResource
 	{
 		
 	}
-	
+
 	/**
 	 * Applies the effect state just prior to rendering the effect.
 	 */
@@ -73,7 +74,7 @@ public class Effect extends GraphicsResource
 	{
 		
 	}
-	
+
 	/**
 	 * Copies data from an existing object to this object.
 	 */

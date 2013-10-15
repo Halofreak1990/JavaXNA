@@ -24,8 +24,8 @@ public class Game implements IDisposable
 	private GameTime gameTime;
 
 	GameComponentCollection components;
-	List<IDrawable> visibleDrawable;
-	List<IUpdateable> enabledUpdateable;
+	ArrayList<IDrawable> visibleDrawable;
+	ArrayList<IUpdateable> enabledUpdateable;
 	
 	GameServiceContainer services;
 	boolean disposed;  
@@ -76,7 +76,9 @@ public class Game implements IDisposable
 			graphicsService = (IGraphicsDeviceService)this.getServices().GetService(IGraphicsDeviceService.class);
 
 			if (graphicsService == null)
+			{
 				throw new InvalidOperationException();
+			}
 		}
 
 		return graphicsService.getGraphicsDevice();
@@ -88,10 +90,12 @@ public class Game implements IDisposable
 	public boolean getIsActive()
 	{
 		boolean isVisible = false;
+		
 		if (GamerServicesDispatcher.IsInitialized())
 		{
 			isVisible = Guide.IsVisible();
 		}
+		
 		return isActive;
 	}
 	
@@ -110,7 +114,10 @@ public class Game implements IDisposable
 	public void setIsMouseVisible(boolean value)
 	{
 		if (isMouseVisible == value)
+		{
 			return;
+		}
+		
 		isMouseVisible = value;
 		//Sdl.SDL_ShowCursor(isMouseVisible ? Sdl.SDL_ENABLE : Sdl.SDL_DISABLE);   
 	}
@@ -175,7 +182,9 @@ public class Game implements IDisposable
 	protected boolean BeginDraw()
 	{
 		if (isFixedTimeStep && gameTime.getIsRunningSlowly())
+		{
 			return false;
+		}
 		
 		return graphicsManager.BeginDraw();
 	}
@@ -195,7 +204,9 @@ public class Game implements IDisposable
 	protected void Dispose(boolean disposing)
 	{
 		if (disposed)
+		{
 			return;
+		}
 		
 		// Dispose managed
 		if (disposing)
@@ -205,7 +216,9 @@ public class Game implements IDisposable
 				IDisposable disposable = (IDisposable)component;
 
 				if (disposable != null)
+				{
 					disposable.Dispose();
+				}
 			}
 		}
 		
@@ -215,7 +228,9 @@ public class Game implements IDisposable
 		disposed  = true;
 		
 		if (Disposed.hasHandlers())
+		{
 			Disposed.raise(this, EventArgs.Empty);
+		}
 	}
 	
 	/**
@@ -266,6 +281,7 @@ public class Game implements IDisposable
 	protected void Initialize()
 	{
 		graphicsService = (IGraphicsDeviceService)getServices().GetService(IGraphicsDeviceService.class);
+		
 		if (graphicsService != null)
 		{
 			graphicsService.DeviceCreated.addHandler(DeviceCreated);
@@ -307,14 +323,18 @@ public class Game implements IDisposable
 	public void Run()
 	{
 		if (inRun)
+		{
 			throw new InvalidOperationException("Run Method called more than once.");
+		}
 		
 		inRun = true;
+		
 		BeginRun();
 		
 		gameHost.Initialize();
 		
 		graphicsManager = (IGraphicsDeviceManager)getServices().GetService(IGraphicsDeviceManager.class);
+		
 		if (graphicsManager != null)
 		{
 			graphicsManager.CreateDevice();
@@ -367,6 +387,7 @@ public class Game implements IDisposable
 				}
 				catch (InterruptedException e) { e.printStackTrace(); }
 			}
+			
 			gameTime.setElapsedGameTime(TargetElapsedTime);
 			gameTime.setTotalGameTime(gameTime.getTotalGameTime().Add(TargetElapsedTime));
 		}
@@ -379,13 +400,20 @@ public class Game implements IDisposable
 		Update(gameTime);
 		
 		elapsedUpdateTime = TimeSpan.FromMilliseconds(getTicks() - gameTime.getTotalGameTime().getTotalMilliseconds());
+		
 		if (isFixedTimeStep && elapsedUpdateTime.CompareTo(TargetElapsedTime) == 1)
+		{
 			gameTime.setIsRunningSlowly(true);
+		}
 		else
+		{
 			gameTime.setIsRunningSlowly(false);
+		}
 		
 		if (!BeginDraw())
+		{
 			return;
+		}
 		
 		Draw(gameTime);
 		EndDraw();
@@ -423,6 +451,7 @@ public class Game implements IDisposable
 			{
 				
 			}
+			
 			IDrawable d = (IDrawable)e.getGameComponent();
 			
 			if (d != null)
@@ -431,7 +460,9 @@ public class Game implements IDisposable
 				d.VisibleChanged.addHandler(DrawableVisibleChanged);
 				
 				if (d.getVisible())
+				{
 					visibleDrawable.add(d);
+				}
 			}
 			
 			IUpdateable u = (IUpdateable)e.getGameComponent();
@@ -460,7 +491,9 @@ public class Game implements IDisposable
 				d.VisibleChanged.removeHandler(DrawableVisibleChanged);
 				
 				if (d.getVisible())
+				{
 					visibleDrawable.remove(d);
+				}
 			}
 			
 			IUpdateable u = (IUpdateable)e.getGameComponent();
@@ -471,7 +504,9 @@ public class Game implements IDisposable
 				u.EnabledChanged.removeHandler(UpdateableEnabledChanged);
 				
 				if (u.getEnabled())
+				{
 					enabledUpdateable.remove(u);
+				}
 			}
 		}
 	}
