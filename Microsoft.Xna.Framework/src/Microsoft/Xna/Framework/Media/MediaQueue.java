@@ -11,21 +11,21 @@ public final class MediaQueue
 	{
 		
 	}
-	
+
 	public int getActiveSongIndex()
 	{
 		
 	}
-	
+
 	public int Count()
 	{
 		
 	}
-	
+
 	MediaQueue()
 	{
 	}
-	
+
 	public Song get(int index)
 	{
 		

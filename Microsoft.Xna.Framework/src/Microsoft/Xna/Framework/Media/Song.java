@@ -17,23 +17,23 @@ public final class Song implements IEquatable<Song>, IDisposable
 	{
 		
 	}
-	
+
 	Song(String name, String fileName, int duration)
 	{
 		
 	}
-	
+
+	private void Dispose(boolean disposing)
+	{
+		
+	}
+
 	@Override
 	public void Dispose()
 	{
 		this.Dispose(true);
 	}
-	
-	private void Dispose(boolean disposing)
-	{
-		
-	}
-	
+
 	/**
 	 * 
 	 */
@@ -42,14 +42,14 @@ public final class Song implements IEquatable<Song>, IDisposable
 	{
 		return (obj instanceof Song) ? Equals((Song)obj) : false;
 	}
-	
+
 	@Override
 	public boolean Equals(Song other)
 	{
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -57,7 +57,7 @@ public final class Song implements IEquatable<Song>, IDisposable
 	{
 		this.Dispose(false);
 	}
-	
+
 	/**
 	 * 
 	 * @param name
@@ -68,7 +68,7 @@ public final class Song implements IEquatable<Song>, IDisposable
 	{
 		
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -78,13 +78,15 @@ public final class Song implements IEquatable<Song>, IDisposable
 	{
 		
 	}
-	
+
 	private void ThrowIfDisposed()
 	{
 		if (this.isDisposed)
+		{
 			throw new ObjectDisposedException(this.toString(), "This object has already been disposed.");
+		}
 	}
-	
+
 	@Override
 	public String toString()
 	{

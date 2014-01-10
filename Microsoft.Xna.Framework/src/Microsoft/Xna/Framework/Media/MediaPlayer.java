@@ -12,44 +12,50 @@ public class MediaPlayer
 	private static boolean repeat;
 	private static boolean shuffle;
 	private static MediaQueue queue;
-	
+
 	/**
 	 * Raised when the active song changes due to active playback or due to explicit calls to the MoveNext or MovePrevious methods.
 	 */
 	public static final Event<EventArgs> ActiveSongChanged = new Event<EventArgs>();
-	
+
 	/**
 	 * Raised when the media player play state changes.
 	 */
 	public static final Event<EventArgs> MediaStateChanged = new Event<EventArgs>();
-	
+
 	/**
 	 * 
 	 */
 	public static void MoveNext()
 	{
-		if (!ActiveSongChanged.getHandlers().isEmpty())
+		if (!ActiveSongChanged.hasHandlers())
+		{
 			ActiveSongChanged.raise(null, EventArgs.Empty);
+		}
 	}
-	
+
 	/**
 	 * 
 	 */
 	public static void MovePrevious()
 	{
-		if (!ActiveSongChanged.getHandlers().isEmpty())
+		if (!ActiveSongChanged.hasHandlers())
+		{
 			ActiveSongChanged.raise(null, EventArgs.Empty);
+		}
 	}
-	
+
 	/**
 	 * 
 	 */
 	public static void Pause()
 	{
-		if (!MediaStateChanged.getHandlers().isEmpty())
+		if (!MediaStateChanged.hasHandlers())
+		{
 			MediaStateChanged.raise(null, EventArgs.Empty);
+		}
 	}
-	
+
 	/**
 	 * 
 	 * @param song
@@ -58,7 +64,7 @@ public class MediaPlayer
 	{
 		
 	}
-	
+
 	/**
 	 * 
 	 * @param songs
@@ -67,7 +73,7 @@ public class MediaPlayer
 	{
 		
 	}
-	
+
 	/**
 	 * 
 	 * @param songs
@@ -77,25 +83,29 @@ public class MediaPlayer
 	{
 		
 	}
-	
+
 	/**
 	 * 
 	 */
 	public static void Resume()
 	{
-		if (!MediaStateChanged.getHandlers().isEmpty())
+		if (!MediaStateChanged.hasHandlers())
+		{
 			MediaStateChanged.raise(null, EventArgs.Empty);
+		}
 	}
-	
+
 	/**
 	 * 
 	 */
 	public static void Stop()
 	{
-		if (!MediaStateChanged.getHandlers().isEmpty())
+		if (!MediaStateChanged.hasHandlers())
+		{
 			MediaStateChanged.raise(null, EventArgs.Empty);
+		}
 	}
-	
+
 	static
 	{
 		repeat = false;

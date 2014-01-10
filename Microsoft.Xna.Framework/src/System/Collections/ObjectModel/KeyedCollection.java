@@ -191,48 +191,55 @@ public abstract class KeyedCollection<TKey, TItem> extends Collection<TItem>
 				}
 			}
 		}
+
 		return false;
 	}
-	
+
 	private boolean ContainsItem(TItem item)
 	{
 		TKey local;
 		TItem local2;
+
 		if ((this.dict != null) || ((local = this.GetKeyForItem(item)) != null))
 		{
 			return super.getItems().contains(item);
 		}
+
 		throw new NotImplementedException();
 	}
-	
+
 	private void CreateDictionary()
 	{
 		this.dict = new HashMap<TKey, TItem>();
 	}
-	
+
 	protected abstract TKey GetKeyForItem(TItem item);
-	
+
 	@Override
 	protected void InsertItem(int index, TItem item)
 	{
 		TKey keyForItem = this.GetKeyForItem(item);
+
 		if (keyForItem != null)
 		{
 			this.AddKey(keyForItem, item);
 		}
+
 		super.InsertItem(index, item);
 	}
-	
+
 	public boolean Remove(TKey key)
 	{
 		if (key == null)
 		{
 			throw new ArgumentNullException("key");
 		}
+
 		if (this.dict != null)
 		{
 			return (this.dict.containsKey(key) && super.Remove(this.dict.get(key)));
 		}
+
 		if (key != null)
 		{
 			for (int i = 0; i < super.getItems().size(); i++)
@@ -244,20 +251,23 @@ public abstract class KeyedCollection<TKey, TItem> extends Collection<TItem>
 				}
 			}
 		}
+
 		return false;
 	}
-	
+
 	@Override
 	protected void RemoveItem(int index)
 	{
 		TKey keyForItem = this.GetKeyForItem(super.getItems().get(index));
+
 		if (keyForItem != null)
 		{
 			this.RemoveKey(keyForItem);
 		}
+
 		super.RemoveItem(index);
 	}
-	
+
 	private void RemoveKey(TKey key)
 	{
 		if (this.dict != null)
@@ -269,12 +279,13 @@ public abstract class KeyedCollection<TKey, TItem> extends Collection<TItem>
 			this.keyCount--;
 		}
 	}
-	
+
 	@Override
 	protected void SetItem(int index, TItem item)
 	{
 		TKey keyForItem = this.GetKeyForItem(item);
 		TKey x = this.GetKeyForItem(super.getItems().get(index));
+
 		if (this.comparer.equals(x, keyForItem))
 		{
 			if ((keyForItem != null) && (this.dict != null))
@@ -288,11 +299,13 @@ public abstract class KeyedCollection<TKey, TItem> extends Collection<TItem>
 			{
 				this.AddKey(keyForItem, item);
 			}
+
 			if (x != null)
 			{
 				this.RemoveKey(x);
 			}
 		}
+
 		super.SetItem(index, item);
 	}
 }

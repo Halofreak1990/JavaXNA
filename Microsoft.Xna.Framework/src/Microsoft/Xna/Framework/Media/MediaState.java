@@ -10,13 +10,13 @@ public enum MediaState
 	/**
 	 * Media playback is stopped.
 	 */
-    Stopped,
-    /**
-     * Media is currently playing.
-     */
-    Playing,
-    /**
-     * Media playback is paused.
-     */
-    Paused
+	Stopped,
+	/**
+	 * Media is currently playing.
+	 */
+	Playing,
+	/**
+	 * Media playback is paused.
+	 */
+	Paused
 }
