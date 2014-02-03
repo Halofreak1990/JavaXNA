@@ -47,7 +47,7 @@ public final class Point extends ValueType implements IEquatable<Point>
 		X = x;
 		Y = y;
 	}
-	
+
 	/**
 	 * Determines whether the specified Object is equal to this instance.
 	 * 
@@ -59,7 +59,7 @@ public final class Point extends ValueType implements IEquatable<Point>
 	{
 		return (obj != null && obj instanceof Point) ? this.Equals((Point)obj) : false;
 	}
-	
+
 	/**
 	 * Determines whether two Point instances are equal.
 	 * 
@@ -68,24 +68,24 @@ public final class Point extends ValueType implements IEquatable<Point>
 	 */
 	public boolean Equals(Point other)
 	{
-	    return ((this.X == other.X) && (this.Y == other.Y));
+		return ((this.X == other.X) && (this.Y == other.Y));
 	}
-	
+
 	/**
 	 * Gets the hash code for this object.
 	 */
 	@Override
 	public int hashCode()
 	{
-	    return (this.X ^ this.Y);
+		return (this.X ^ this.Y);
 	}
-	
+
 	/**
 	 * Returns a String that represents the current Point.
 	 */
 	@Override
 	public String toString()
 	{
-	    return String.format(Locale.getDefault(), "{X:%i Y:%i}", this.X, this.Y);
+		return String.format(Locale.getDefault(), "{X:%i Y:%i}", this.X, this.Y);
 	}
 }

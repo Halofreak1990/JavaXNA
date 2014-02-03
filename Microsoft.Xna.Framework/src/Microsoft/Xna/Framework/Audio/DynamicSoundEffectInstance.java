@@ -10,12 +10,12 @@ import System.*;
 public final class DynamicSoundEffectInstance extends SoundEffectInstance
 {
 	private AudioFormat format;
-	
+
 	/**
 	 * Event that occurs when the number of audio capture buffers awaiting playback is less than or equal to two.
 	 */
 	public final Event<EventArgs> BufferNeeded = new Event<EventArgs>();
-	
+
 	/**
 	 * Initializes a new instance of this class, which creates a dynamic sound effect based on the specified sample rate and audio channel.
 	 * 
@@ -38,10 +38,10 @@ public final class DynamicSoundEffectInstance extends SoundEffectInstance
 		{
 			throw new ArgumentOutOfRangeException("channels");
 		}
-	    
-	    // TODO: implement
+
+		// TODO: implement
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -57,7 +57,7 @@ public final class DynamicSoundEffectInstance extends SoundEffectInstance
 			super.Dispose(disposing);
 		}
 	}
-	
+
 	/**
 	 * Returns the sample duration based on the specified size of the audio buffer.
 	 * 
@@ -74,19 +74,25 @@ public final class DynamicSoundEffectInstance extends SoundEffectInstance
 		synchronized (super.VoiceHandleLock)
 		{
 			if (super.IsDisposed())
+			{
 				throw new ObjectDisposedException(super.getClass().getName(), "This object has already been disposed.");
-			
+			}
+
 			if (sizeInBytes < 0)
+			{
 				throw new ArgumentException("Buffer size cannot be negative.");
-			
+			}
+
 			if (sizeInBytes == 0)
+			{
 				return TimeSpan.Zero;
-			
+			}
+
 			// TODO: get this from AudioFormat
 			throw new NotImplementedException();
 		}
 	}
-	
+
 	/**
 	 * Returns the size of the audio buffer required to contain audio samples based on the specified duration.
 	 * 
@@ -107,26 +113,27 @@ public final class DynamicSoundEffectInstance extends SoundEffectInstance
 				throw new ObjectDisposedException(super.getClass().getName(), "This object has already been disposed.");
 			
 			if ((duration.getTotalMilliseconds() < 0.0) || (duration.getTotalMilliseconds() > 2147483647.0))
-	        {
-	            throw new ArgumentOutOfRangeException("duration");
-	        }
-	        if (duration == TimeSpan.Zero)
-	        {
-	            return 0;
-	        }
+			{
+			throw new ArgumentOutOfRangeException("duration");
+			}
+			if (duration == TimeSpan.Zero)
+			{
+				return 0;
+			}
 
-	        try
-	        {
-	        	// TODO: implement
-	        }
-	        catch(OverflowException ex)
-	        {
-	        	throw new ArgumentOutOfRangeException("duration");
-	        }
+			try
+			{
+				// TODO: implement
+			}
+			catch(OverflowException ex)
+			{
+				throw new ArgumentOutOfRangeException("duration", ex);
+			}
 		}
+
 		return num;
 	}
-	
+
 	/**
 	 * Begins or resumes audio playback.
 	 * 
@@ -138,13 +145,15 @@ public final class DynamicSoundEffectInstance extends SoundEffectInstance
 		synchronized(super.VoiceHandleLock)
 		{
 			if (super.IsDisposed())
+			{
 				throw new ObjectDisposedException(super.getClass().getName(), "This object has already been disposed.");
-			
+			}
+
 			// TODO: implement
 			throw new NotImplementedException();
 		}
 	}
-	
+
 	/**
 	 * Submits an audio buffer for playback. Playback starts at the beginning, and the buffer is played in its entirety.
 	 * 
@@ -153,9 +162,9 @@ public final class DynamicSoundEffectInstance extends SoundEffectInstance
 	 */
 	public void SubmitBuffer(byte[] buffer)
 	{
-	    this.SubmitBuffer(buffer, 0, buffer.length);
+		this.SubmitBuffer(buffer, 0, buffer.length);
 	}
-	
+
 	/**
 	 * Submits an audio buffer for playback. Playback begins at the specified offset, and the byte count determines the size of the sample played.
 	 * 
@@ -178,9 +187,12 @@ public final class DynamicSoundEffectInstance extends SoundEffectInstance
 		synchronized(super.VoiceHandleLock)
 		{
 			int num = 0;
+
 			if (super.IsDisposed())
+			{
 				throw new ObjectDisposedException(super.getClass().getName(), "This object has already been disposed.");
-			
+			}
+
 			if (((buffer == null) || (buffer.length == 0)) || !this.format.IsAligned(buffer.length))
 			{
 				throw new ArgumentException("Ensure that the buffer length is non-zero and meets the block alignment requirements for the audio format.");
@@ -195,13 +207,13 @@ public final class DynamicSoundEffectInstance extends SoundEffectInstance
 			}
 			catch(OverflowException ex)
 			{
-				throw new ArgumentException("Ensure that count is valid and meets the block alignment requirements for the audio format. Offset and count must define a valid region within the buffer boundaries.");
+				throw new ArgumentException("Ensure that count is valid and meets the block alignment requirements for the audio format. Offset and count must define a valid region within the buffer boundaries.", ex);
 			}
 			if (((count <= 0) || (num > buffer.length)) |!this.format.IsAligned(count))
 			{
 				throw new ArgumentException("Ensure that count is valid and meets the block alignment requirements for the audio format. Offset and count must define a valid region within the buffer boundaries.");
 			}
-			
+
 			// TODO: implement
 			throw new NotImplementedException();
 		}

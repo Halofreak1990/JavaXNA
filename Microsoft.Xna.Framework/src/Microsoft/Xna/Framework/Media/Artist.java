@@ -51,6 +51,7 @@ public final class Artist implements IEquatable<Artist>, IDisposable
 	    this.songs = SongCollection.Empty;
 	    this.albums = AlbumCollection.Empty;
 	    this.handle = handle;
+	    
 	    if (this.IsValidHandle)
 	    {
 	        StringBuilder sbName = new StringBuilder(260);

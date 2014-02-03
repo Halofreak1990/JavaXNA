@@ -10,18 +10,18 @@ import System.*;
 public class SoundEffectInstance implements IDisposable
 {
 	private float currentPan;
-    private float currentPitch;
-    private float currentVolume;
+	private float currentPitch;
+	private float currentVolume;
 	private boolean isDisposed;
 	private boolean isFireAndForget;
 	private SoundEffect parent;
 	Object VoiceHandleLock;
-	
+
 	/**
 	 * Gets a value that indicates whether looping is enabled for the SoundEffectInstance. Reference page contains links to related code samples.
 	 */
 	public boolean IsLooped;
-	
+
 	/**
 	 * Gets a value that indicates whether the object is disposed.
 	 */
@@ -29,12 +29,12 @@ public class SoundEffectInstance implements IDisposable
 	{
 		return isDisposed;
 	}
-	
+
 	boolean IsFireAndForget()
 	{
 		return this.isFireAndForget;
 	}
-	
+
 	/**
 	 * Gets the panning for the SoundEffectInstance.
 	 */
@@ -42,7 +42,7 @@ public class SoundEffectInstance implements IDisposable
 	{
 		return this.currentPan;
 	}
-	
+
 	/**
 	 * Sets the panning for the SoundEffectInstance.
 	 */
@@ -51,16 +51,20 @@ public class SoundEffectInstance implements IDisposable
 		synchronized(this)
 		{
 			if (this.isDisposed)
+			{
 				throw new ObjectDisposedException(super.getClass().toString(), "FrameworkResources.ObjectDisposedException");
-			
+			}
+
 			if (value < -1f || value > 1f)
+			{
 				throw new ArgumentOutOfRangeException("value");
-			
+			}
+
 			//Helpers.ThrowExceptionFromErrorCode(SoundEffectUnsafeNativeMethods.SetPan(this.voiceHandle, value));
-            this.currentPan = value;
+			this.currentPan = value;
 		}
 	}
-	
+
 	/**
 	 * Gets the pitch adjustment for the SoundEffectInstance. Reference page contains links to related code samples.
 	 */
@@ -68,7 +72,7 @@ public class SoundEffectInstance implements IDisposable
 	{
 		return this.currentPitch;
 	}
-	
+
 	/**
 	 * Sets the pitch adjustment for the SoundEffectInstance. Reference page contains links to related code samples.
 	 */
@@ -77,21 +81,25 @@ public class SoundEffectInstance implements IDisposable
 		synchronized(this)
 		{
 			if (this.isDisposed)
+			{
 				throw new ObjectDisposedException(super.getClass().toString(), "FrameworkResources.ObjectDisposedException");
-			
+			}
+
 			if (value < -1f || value > 1f)
+			{
 				throw new ArgumentOutOfRangeException("value");
-		
+			}
+
 			//Helpers.ThrowExceptionFromErrorCode(SoundEffectUnsafeNativeMethods.SetPitch(this.voiceHandle, value));
 			this.currentPitch = value;
 		}
 	}
-	
+
 	SoundEffect getSoundEffect()
 	{
 		return this.parent;
 	}
-	
+
 	/**
 	 * Gets the current state (playing, paused, or stopped) of the SoundEffectInstance.
 	 */
@@ -100,13 +108,15 @@ public class SoundEffectInstance implements IDisposable
 		synchronized(this)
 		{
 			if (this.isDisposed)
+			{
 				throw new ObjectDisposedException(super.getClass().toString(), "FrameworkResources.ObjectDisposedException");
-			
+			}
+
 			// TODO: implement
 			throw new NotImplementedException();
 		}
 	}
-	
+
 	/**
 	 * Gets the volume of the SoundEffectInstance. Reference page contains links to related code samples.
 	 */
@@ -114,7 +124,7 @@ public class SoundEffectInstance implements IDisposable
 	{
 		return this.currentVolume;
 	}
-	
+
 	/**
 	 * Sets the volume of the SoundEffectInstance. Reference page contains links to related code samples.
 	 */
@@ -123,30 +133,36 @@ public class SoundEffectInstance implements IDisposable
 		synchronized(this)
 		{
 			if (this.isDisposed)
+			{
 				throw new ObjectDisposedException(super.getClass().toString(), "FrameworkResources.ObjectDisposedException");
-			
+			}
+
 			if (value < -1f || value > 1f)
+			{
 				throw new ArgumentOutOfRangeException("value");
-			
+			}
+
 			//Helpers.ThrowExceptionFromErrorCode(SoundEffectUnsafeNativeMethods.SetVolume(this.voiceHandle, value));
 			this.currentVolume = value;
 		}
 	}
-	
+
 	SoundEffectInstance()
 	{
 		this.currentVolume = 1f;
 		// TODO: implement
 		this.VoiceHandleLock = new Object();
 	}
-	
+
 	SoundEffectInstance(SoundEffect parentEffect, boolean fireAndForget)
 	{
 		this.currentVolume = 1f;
 		this.VoiceHandleLock = new Object();
 		if (parentEffect.IsDisposed())
+		{
 			throw new ObjectDisposedException(SoundEffect.class.getName(), "This object has already been disposed.");
-		
+		}
+
 		this.parent = parentEffect;
 		this.setVolume(1f);
 		this.setPitch(0f);
@@ -154,7 +170,7 @@ public class SoundEffectInstance implements IDisposable
 		this.IsLooped = false;
 		this.isFireAndForget = fireAndForget;
 	}
-	
+
 	/**
 	 * Applies 3D positioning to the sound using a single listener. Reference page contains links to related code samples.
 	 * 
@@ -168,7 +184,7 @@ public class SoundEffectInstance implements IDisposable
 	{
 		this.Apply3D(new AudioListener[] { listener }, emitter);
 	}
-	
+
 	/**
 	 * Applies 3D position to the sound using multiple listeners. Reference page contains links to related code samples.
 	 *  
@@ -183,13 +199,15 @@ public class SoundEffectInstance implements IDisposable
 		synchronized(this)
 		{
 			if (this.isDisposed)
+			{
 				throw new ObjectDisposedException(super.getClass().toString(), "FrameworkResources.ObjectDisposedException");
-			
+			}
+
 			// TODO: implement
 			throw new NotImplementedException();
 		}
 	}
-	
+
 	/**
 	 * Releases unmanaged resources held by this SoundEffectInstance.
 	 */
@@ -197,7 +215,7 @@ public class SoundEffectInstance implements IDisposable
 	{
 		this.Dispose(true);
 	}
-	
+
 	/**
 	 * Releases the unmanaged resources held by this SoundEffectInstance, and optionally releases the managed resources.
 	 * 
@@ -218,7 +236,7 @@ public class SoundEffectInstance implements IDisposable
 			}
 		}
 	}
-	
+
 	/**
 	 * Releases unmanaged resources and performs other cleanup operations before the SoundEffectInstance is reclaimed by garbage collection.
 	 */
@@ -226,7 +244,7 @@ public class SoundEffectInstance implements IDisposable
 	{
 		this.Dispose(false);
 	}
-	
+
 	/**
 	 * Pauses a SoundEffectInstance.
 	 */
@@ -235,13 +253,15 @@ public class SoundEffectInstance implements IDisposable
 		synchronized(this)
 		{
 			if (this.isDisposed)
+			{
 				throw new ObjectDisposedException(super.getClass().toString(), "FrameworkResources.ObjectDisposedException");
-			
+			}
+
 			// TODO: implement
 			throw new NotImplementedException();
 		}
 	}
-	
+
 	/**
 	 * Plays or resumes a SoundEffectInstance.
 	 */
@@ -250,13 +270,15 @@ public class SoundEffectInstance implements IDisposable
 		synchronized(this)
 		{
 			if (this.isDisposed)
+			{
 				throw new ObjectDisposedException(super.getClass().toString(), "FrameworkResources.ObjectDisposedException");
-			
+			}
+
 			// TODO: implement
 			throw new NotImplementedException();
 		}
 	}
-	
+
 	/**
 	 * Resumes playback for a SoundEffectInstance.
 	 */
@@ -265,13 +287,15 @@ public class SoundEffectInstance implements IDisposable
 		synchronized(this)
 		{
 			if (this.isDisposed)
+			{
 				throw new ObjectDisposedException(super.getClass().toString(), "FrameworkResources.ObjectDisposedException");
-			
+			}
+
 			// TODO: implement
 			throw new NotImplementedException();
 		}
 	}
-	
+
 	/**
 	 * Immediately stops playing a SoundEffectInstance.
 	 */
@@ -279,7 +303,7 @@ public class SoundEffectInstance implements IDisposable
 	{
 		this.Stop(true);
 	}
-	
+
 	/**
 	 * Stops playing a SoundEffectInstance, either immediately or as authored.
 	 * 
@@ -291,8 +315,10 @@ public class SoundEffectInstance implements IDisposable
 		synchronized(this)
 		{
 			if (this.isDisposed)
+			{
 				throw new ObjectDisposedException(super.getClass().toString(), "FrameworkResources.ObjectDisposedException");
-			
+			}
+
 			// TODO: implement
 			throw new NotImplementedException();
 		}

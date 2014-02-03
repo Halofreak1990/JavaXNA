@@ -1,5 +1,6 @@
 package Microsoft.Xna.Framework.Content;
 
+import java.io.InputStream;
 import java.lang.reflect.*;
 import java.util.*;
 
@@ -20,19 +21,31 @@ public class ContentManager implements IDisposable
 	private IServiceProvider serviceProvider;
 	private Action<IDisposable> recordDisposableObject;
 
+	/**
+	 * Gets the root directory associated with this ContentManager.
+	 */
 	public String getRootDirectory()
 	{
 		return this.rootDirectory;
 	}
-	
+
+	/**
+	 * Sets the root directory associated with this ContentManager.
+	 * 
+	 * @param value
+	 */
 	public void setRootDirectory(String value)
 	{
 		if (value == null)
+		{
 			throw new ArgumentNullException("value");
-		
+		}
+
 		if (this.assets.size() > 0)
+		{
 			throw new InvalidOperationException("");
-		
+		}
+
 		this.rootDirectory = value;
 		/*this.fullRootDirectory = value;
 		this.isRootDirectoryAbsolute = TitleContainer.IsPathAbsolute(value);
@@ -48,15 +61,22 @@ public class ContentManager implements IDisposable
 		}*/
 	}
 
+	/**
+	 * Gets the service provider associated with the ContentManager.
+	 */
 	public IServiceProvider getServiceProvider()
 	{
 		return this.serviceProvider;
 	}
 
 	/**
+	 * Initializes a new instance of ContentManager.
 	 * 
 	 * @param serviceProvider
+	 * The service provider that the ContentManager should use to locate services.
+	 * 
 	 * @throws ArgumentNullException
+	 * serviceProvider is null.
 	 */
 	public ContentManager(IServiceProvider serviceProvider)
 	{
@@ -64,10 +84,16 @@ public class ContentManager implements IDisposable
 	}
 
 	/**
+	 * Initializes a new instance of ContentManager.
 	 * 
 	 * @param serviceProvider
+	 * The service provider the ContentManager should use to locate services.
+	 * 
 	 * @param rootDirectory
+	 * The root directory to search for content.
+	 * 
 	 * @throws ArgumentNullException
+	 * serviceProvider or rootDirectory is null.
 	 */
 	public ContentManager(IServiceProvider serviceProvider, String rootDirectory)
 	{
@@ -87,7 +113,7 @@ public class ContentManager implements IDisposable
 	}
 
 	/**
-	 * 
+	 * Releases all resources used by the ContentManager class.
 	 */
 	@Override
 	public void Dispose()
@@ -95,6 +121,12 @@ public class ContentManager implements IDisposable
 		Dispose(true);
 	}
 
+	/**
+	 * Releases the unmanaged resources used by the ContentManager and optionally releases the managed resources.
+	 * 
+	 * @param disposing
+	 * true to release both managed and unmanaged resources; false to release only unmanaged resources.
+	 */
 	protected void Dispose(boolean disposing)
 	{
 		if (!this.disposed)
@@ -153,9 +185,20 @@ public class ContentManager implements IDisposable
 				
 			}
 		}
-		
+
 		T asset = this.ReadAsset(assetName, null);
 		return asset;
+	}
+
+	/**
+	 * Opens a stream for reading the specified asset. Derived classes can replace this to implement pack files or asset compression.
+	 * 
+	 * @param assetName
+	 * The name of the asset being read.
+	 */
+	protected InputStream OpenStream(String assetName)
+	{
+		throw new NotImplementedException();
 	}
 
 	/**

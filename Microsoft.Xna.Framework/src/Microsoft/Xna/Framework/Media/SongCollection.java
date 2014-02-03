@@ -12,6 +12,8 @@ import System.*;
 public final class SongCollection implements Iterable<Song>
 {
 
+	static final SongCollection Empty = null;
+
 	/**
 	 * 
 	 */

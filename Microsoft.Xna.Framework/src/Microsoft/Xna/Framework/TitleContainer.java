@@ -148,7 +148,8 @@ public class TitleContainer
 		{
 			if (exception instanceof java.io.FileNotFoundException)
 			{
-				throw new FileNotFoundException("", "name", exception);
+				// TODO: error message
+				throw new FileNotFoundException("", name, exception);
 			}
 		}
 

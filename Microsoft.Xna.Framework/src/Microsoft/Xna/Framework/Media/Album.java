@@ -73,12 +73,8 @@ public final class Album implements IEquatable<Album>, IDisposable
 		if (!isDisposed)
 		{
 			this.isDisposed = true;
-			// TODO: implement
 
-			if (false)
-			{
-				
-			}
+			// TODO: implement
 
 			songs = SongCollection.Empty;
 		}

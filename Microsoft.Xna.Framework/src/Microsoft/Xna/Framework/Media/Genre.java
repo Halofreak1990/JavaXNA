@@ -9,6 +9,8 @@ import System.*;
  */
 public final class Genre implements IEquatable<Genre>, IDisposable
 {
+	static final Genre Empty = null;
+
 	/**
 	 * Gets the AlbumCollection for the Genre.
 	 */

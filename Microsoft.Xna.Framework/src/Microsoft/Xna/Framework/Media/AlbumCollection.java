@@ -11,6 +11,8 @@ import System.*;
  */
 public final class AlbumCollection implements Iterable<Album>
 {
+	static final AlbumCollection Empty = null;
+
 	/**
 	 * Returns an iterator that iterates through the AlbumCollection.
 	 */

@@ -12,9 +12,9 @@ import Microsoft.Xna.Framework.Net.*;
  */
 public class Game1 extends Game
 {
-	GraphicsDeviceManager graphics;
-	SpriteBatch spriteBatch;
-	Texture2D background;
+	private GraphicsDeviceManager graphics;
+	private SpriteBatch spriteBatch;
+	private Texture2D background;
 	
 	public Game1()
 	{
@@ -24,9 +24,9 @@ public class Game1 extends Game
 	
 	/**
 	 * Allows the game to perform any initialization it needs to before starting to run.
-     * This is where it can query for any required services and load any non-graphic
-     * related content. Calling base.Initialize will enumerate through any components
-     * and initialize them as well.
+	 * This is where it can query for any required services and load any non-graphic
+	 * related content. Calling base.Initialize will enumerate through any components
+	 * and initialize them as well.
 	 */
 	@Override
 	public void Initialize()
@@ -38,7 +38,7 @@ public class Game1 extends Game
 	
 	/**
 	 * LoadContent will be called once per game and is the place to load
-     * all of your content.
+	 * all of your content.
 	 */
 	@Override
 	public void LoadContent()
@@ -54,7 +54,7 @@ public class Game1 extends Game
 	
 	/**
 	 * UnloadContent will be called once per game and is the place to unload
-     * all content.
+	 * all content.
 	 */
 	@Override
 	protected void UnloadContent()
