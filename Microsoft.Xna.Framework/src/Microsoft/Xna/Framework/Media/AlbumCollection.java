@@ -2,6 +2,8 @@ package Microsoft.Xna.Framework.Media;
 
 import java.util.Iterator;
 
+import System.*;
+
 /**
  * 
  * 
@@ -15,27 +17,25 @@ public final class AlbumCollection implements Iterable<Album>
 	@Override
 	public Iterator<Album> iterator()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
 	}
 
 	protected void finalize()
 	{
-		
 	}
 	
 	public int Count()
 	{
-		
+		throw new NotImplementedException();
 	}
 	
 	public boolean IsDisposed()
 	{
-		
+		throw new NotImplementedException();
 	}
 	
 	public Album get(int index)
 	{
-		
+		throw new NotImplementedException();
 	}
 }

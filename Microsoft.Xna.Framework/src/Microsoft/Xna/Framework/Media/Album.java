@@ -95,7 +95,7 @@ public final class Album implements IEquatable<Album>, IDisposable
 	{
 		return (obj instanceof Album) ? (this == (Album)obj) : false;
 	}
-	
+
 	/**
 	 * Determines whether the specified Album is equal to this Album.
 	 * 
@@ -133,7 +133,9 @@ public final class Album implements IEquatable<Album>, IDisposable
 	private void ThrowIfDisposed()
 	{
 		if (this.isDisposed)
-			throw new ObjectDisposedException(super.toString(), "This object has already been disposed.");
+		{
+			throw new ObjectDisposedException(this.getClass().toString(), "This object has already been disposed.");
+		}
 	}
 
 	/**

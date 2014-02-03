@@ -2,6 +2,8 @@ package Microsoft.Xna.Framework.Media;
 
 import java.util.Iterator;
 
+import System.*;
+
 /**
  * 
  * 
@@ -16,17 +18,16 @@ public final class SongCollection implements Iterable<Song>
 	@Override
 	public Iterator<Song> iterator()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		throw new NotImplementedException();
 	}
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public int Count()
+	public int getCount()
 	{
-		
+		throw new NotImplementedException();
 	}
 	
 	/**
@@ -35,7 +36,7 @@ public final class SongCollection implements Iterable<Song>
 	 */
 	public boolean IsDisposed()
 	{
-		
+		throw new NotImplementedException();
 	}
 	
 	/**
@@ -53,6 +54,6 @@ public final class SongCollection implements Iterable<Song>
 	 */
 	public Song get(int index)
 	{
-		
+		throw new NotImplementedException();
 	}
 }

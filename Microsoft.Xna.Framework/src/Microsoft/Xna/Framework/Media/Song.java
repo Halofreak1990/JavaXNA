@@ -36,6 +36,9 @@ public final class Song implements IEquatable<Song>, IDisposable
 
 	/**
 	 * 
+	 * 
+	 * @param obj
+	 * 
 	 */
 	@Override
 	public boolean equals(Object obj)
@@ -43,6 +46,12 @@ public final class Song implements IEquatable<Song>, IDisposable
 		return (obj instanceof Song) ? Equals((Song)obj) : false;
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param other
+	 * 
+	 */
 	@Override
 	public boolean Equals(Song other)
 	{
@@ -66,7 +75,7 @@ public final class Song implements IEquatable<Song>, IDisposable
 	 */
 	public static Song FromUri(String name, Uri uri)
 	{
-		
+		throw new NotImplementedException();
 	}
 
 	/**
@@ -76,20 +85,23 @@ public final class Song implements IEquatable<Song>, IDisposable
 	@Override
 	public int hashCode()
 	{
-		
+		throw new NotImplementedException();
 	}
 
 	private void ThrowIfDisposed()
 	{
 		if (this.isDisposed)
 		{
-			throw new ObjectDisposedException(this.toString(), "This object has already been disposed.");
+			throw new ObjectDisposedException(this.getClass().toString(), "This object has already been disposed.");
 		}
 	}
 
+	/**
+	 * 
+	 */
 	@Override
 	public String toString()
 	{
-		
+		throw new NotImplementedException();
 	}
 }
