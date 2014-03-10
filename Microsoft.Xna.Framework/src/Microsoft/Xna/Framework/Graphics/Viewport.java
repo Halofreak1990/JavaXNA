@@ -36,19 +36,20 @@ public final class Viewport extends ValueType implements IEquatable<Viewport>
 	 * Gets or sets the maximum depth of the clip volume.
 	 */
 	public float MaxDepth;
-	
+
 	/**
 	 * Gets the aspect ratio used by the viewport.
 	 */
 	public float getAspectRatio()
 	{
 		if ((this.Height != 0) && (this.Width != 0))
-        {
-            return (((float) this.Width) / ((float) this.Height));
-        }
-        return 0f;
+		{
+			return (((float) this.Width) / ((float) this.Height));
+		}
+
+		return 0f;
 	}
-	
+
 	/**
 	 * Gets the size of this resource.
 	 */
@@ -56,7 +57,7 @@ public final class Viewport extends ValueType implements IEquatable<Viewport>
 	{
 		return new Rectangle(X, Y, Width, Height);
 	}
-	
+
 	/**
 	 * Sets the size of this resource.
 	 */
@@ -67,7 +68,7 @@ public final class Viewport extends ValueType implements IEquatable<Viewport>
 		Width = bounds.Width;
 		Height = bounds.Height;
 	}
-	
+
 	/**
 	 * Returns the title safe area of the current viewport.
 	 */
@@ -75,7 +76,7 @@ public final class Viewport extends ValueType implements IEquatable<Viewport>
 	{
 		return new Rectangle(X, Y, Width, Height);
 	}
-	
+
 	/**
 	 * Creates an instance of this object.
 	 * 
@@ -100,7 +101,7 @@ public final class Viewport extends ValueType implements IEquatable<Viewport>
 		MinDepth = 0f;
 		MaxDepth = 1f;
 	}
-	
+
 	/**
 	 * Creates an instance of this object.
 	 * 
@@ -116,18 +117,16 @@ public final class Viewport extends ValueType implements IEquatable<Viewport>
 		MinDepth = 0f;
 		MaxDepth = 1f;
 	}
-	
+
 	/**
 	 * 
 	 */
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (obj instanceof Viewport)
-			return this.Equals((Viewport)obj);
-		return false;
+		return (obj instanceof Viewport) ? this.Equals((Viewport)obj) : false;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -137,7 +136,7 @@ public final class Viewport extends ValueType implements IEquatable<Viewport>
 				(this.Width == other.Width) && (this.Height == other.Height) &&
 				(this.MaxDepth == other.MaxDepth) && (this.MinDepth == other.MinDepth));
 	}
-	
+
 	/**
 	 * Retrieves a string representation of this object.
 	 */
@@ -145,13 +144,14 @@ public final class Viewport extends ValueType implements IEquatable<Viewport>
 	{
 		return String.format(Locale.getDefault(), "{{X:%i Y:%i Width:%i Height:%i MinDepth:%f MaxDepth:%f}}", X, Y, Width, Height, MinDepth, MaxDepth);
 	}
-	
+
 	private static boolean WithinEpsilon(float a, float b)
-    {
-        float num = a - b;
-        return ((-1.401298E-45f <= num) && (num <= 1.401298E-45f));
-    }
-	
+	{
+		float num = a - b;
+
+		return ((-1.401298E-45f <= num) && (num <= 1.401298E-45f));
+	}
+
 	/**
 	 * Projects a 3D vector from object space into screen space.
 	 * 
@@ -168,20 +168,20 @@ public final class Viewport extends ValueType implements IEquatable<Viewport>
 	 * The world matrix.
 	 */
 	public Vector3 Project(Vector3 source, Matrix projection, Matrix view, Matrix world)
-    {
-        Matrix matrix = Matrix.Multiply(Matrix.Multiply(world, view), projection);
-        Vector3 vector = Vector3.Transform(source, matrix);
-        float a = (((source.X * matrix.M14) + (source.Y * matrix.M24)) + (source.Z * matrix.M34)) + matrix.M44;
-        if (!WithinEpsilon(a, 1f))
-        {
-            vector.Divide(a);
-        }
-        vector.X = (((vector.X + 1f) * 0.5f) * this.Width) + this.X;
-        vector.Y = (((-vector.Y + 1f) * 0.5f) * this.Height) + this.Y;
-        vector.Z = (vector.Z * (this.MaxDepth - this.MinDepth)) + this.MinDepth;
-        return vector;
-    }
-	
+	{
+		Matrix matrix = Matrix.Multiply(Matrix.Multiply(world, view), projection);
+		Vector3 vector = Vector3.Transform(source, matrix);
+		float a = (((source.X * matrix.M14) + (source.Y * matrix.M24)) + (source.Z * matrix.M34)) + matrix.M44;
+		if (!WithinEpsilon(a, 1f))
+		{
+			vector.Divide(a);
+		}
+		vector.X = (((vector.X + 1f) * 0.5f) * this.Width) + this.X;
+		vector.Y = (((-vector.Y + 1f) * 0.5f) * this.Height) + this.Y;
+		vector.Z = (vector.Z * (this.MaxDepth - this.MinDepth)) + this.MinDepth;
+		return vector;
+	}
+
 	/**
 	 * Converts a screen space point into a corresponding point in world space.
 	 * 
@@ -198,7 +198,7 @@ public final class Viewport extends ValueType implements IEquatable<Viewport>
 	 * The world matrix.
 	 */
 	public Vector3 Unproject(Vector3 source, Matrix projection, Matrix view, Matrix world)
-    {
+	{
 		Matrix matrix = Matrix.Invert(Matrix.Multiply(Matrix.Multiply(world, view), projection));
 		source.X = (((source.X - this.X) / ((float) this.Width)) * 2f) - 1f;
 		source.Y = -((((source.Y - this.Y) / ((float) this.Height)) * 2f) - 1f);
@@ -210,5 +210,5 @@ public final class Viewport extends ValueType implements IEquatable<Viewport>
 			vector.Divide(a);
 		}
 		return vector;
-    }
+	}
 }

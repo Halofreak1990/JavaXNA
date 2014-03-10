@@ -36,11 +36,11 @@ public final class Artist implements IEquatable<Artist>, IDisposable
 
 	private Artist()
 	{
-	    //this.handle = uint.MaxValue;
-	    this.hashcode = -1;
-	    this.name = "";
-	    this.songs = SongCollection.Empty;
-	    this.albums = AlbumCollection.Empty;
+		//this.handle = uint.MaxValue;
+		this.hashcode = -1;
+		this.name = "";
+		this.songs = SongCollection.Empty;
+		this.albums = AlbumCollection.Empty;
 	}
 
 	/*Artist(uint handle)

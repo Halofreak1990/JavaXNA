@@ -17,7 +17,7 @@ public class NotSupportedException extends SystemException
 	{
 		
 	}
-	
+
 	/**
 	 * Initializes a new instance of the NotSupportedException class with a specified error message.
 	 * 
@@ -29,7 +29,7 @@ public class NotSupportedException extends SystemException
 	{
 		super(message);
 	}
-	
+
 	/**
 	 * Initializes a new instance of the NotSupportedException class with a specified error message and a reference to the inner exception that is the cause of this exception.
 	 * 

@@ -10,7 +10,7 @@ public class ArgumentOutOfRangeException extends ArgumentException
 	private static final long serialVersionUID = 1936158280585747234L;
 	private Object m_actualValue;
 	private static String _rangeMessage;
-	
+
 	/**
 	 * Gets the argument value that causes this exception.
 	 * 
@@ -21,16 +21,17 @@ public class ArgumentOutOfRangeException extends ArgumentException
 	{
 		return m_actualValue;
 	}
-	
+
 	private static String getRangeMessage()
 	{
-        if (_rangeMessage == null)
-        {
-            _rangeMessage = "Specified argument was out of the range of valid values.";
-        }
-        return _rangeMessage;
+		if (_rangeMessage == null)
+		{
+			_rangeMessage = "Specified argument was out of the range of valid values.";
+		}
+		
+		return _rangeMessage;
 	}
-	
+
 	/**
 	 * Initializes a new instance of the ArgumentOutOfRangeException class.
 	 */
@@ -38,7 +39,7 @@ public class ArgumentOutOfRangeException extends ArgumentException
 	{
 		super(getRangeMessage());
 	}
-	
+
 	/**
 	 * Initializes a new instance of the ArgumentOutOfRangeException class with the name of the parameter that causes this exception.
 	 * 
@@ -63,7 +64,7 @@ public class ArgumentOutOfRangeException extends ArgumentException
 	{
 		super(message, innerException);
 	}
-	
+
 	/**
 	 * Initializes a new instance of the ArgumentOutOfRangeException class with a specified error message and the name of the parameter that causes this exception.
 	 * 
@@ -77,7 +78,7 @@ public class ArgumentOutOfRangeException extends ArgumentException
 	{
 		super(message, paramName);
 	}
-	
+
 	/**
 	 * Initializes a new instance of the ArgumentOutOfRangeException class with a specified error message, the parameter name, and the value of the argument.
 	 * 
@@ -93,6 +94,6 @@ public class ArgumentOutOfRangeException extends ArgumentException
 	public ArgumentOutOfRangeException(String paramName, Object actualValue, String message)
 	{
 		super(message, paramName);
-	    this.m_actualValue = actualValue;
+		this.m_actualValue = actualValue;
 	}
 }

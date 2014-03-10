@@ -15,7 +15,7 @@ public class SystemException extends RuntimeException
 	public SystemException()
 	{
 	}
-	
+
 	/**
 	 * Initializes a new instance of the SystemException class with a specified error message.
 	 * 
@@ -26,7 +26,7 @@ public class SystemException extends RuntimeException
 	{
 		super(message);
 	}
-	
+
 	/**
 	 * Initializes a new instance of the SystemException class with a specified error message and a reference to the inner exception that is the cause of this exception.
 	 * 

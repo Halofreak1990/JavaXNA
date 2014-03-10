@@ -11,7 +11,7 @@ import Microsoft.Xna.Framework.*;
 public final class StorageDevice
 {
 	public static final Event<EventArgs> DeviceChanged = new Event<EventArgs>();
-	
+
 	/**
 	 * Gets the amount of free space on the device.
 	 */
@@ -19,7 +19,7 @@ public final class StorageDevice
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Gets whether the device is connected.
 	 */
@@ -27,7 +27,7 @@ public final class StorageDevice
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Gets the total amount of space on the device.
 	 */
@@ -35,7 +35,7 @@ public final class StorageDevice
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Begins the process for opening a StorageContainer containing any files for the specified title.
 	 * 
@@ -52,7 +52,7 @@ public final class StorageDevice
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Begins the process for displaying the storage device selector user interface, and for specifying the size of the data to be written to the storage device and the callback implemented when the player chooses a device.
 	 * 
@@ -72,7 +72,7 @@ public final class StorageDevice
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Begins the process for displaying the storage device selector user interface, and for specifying a callback implemented when the player chooses a device.
 	 * 
@@ -86,7 +86,7 @@ public final class StorageDevice
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Begins the process for displaying the storage device selector user interface, for specifying the player who requested the save operation, for setting the size of data to be written to the storage device, and for naming the callback implemented when the player chooses a device.
 	 * 
@@ -108,11 +108,13 @@ public final class StorageDevice
 	public static IAsyncResult BeginShowSelector(PlayerIndex player, int sizeInBytes, int directoryCount, AsyncCallback callback, Object state)
 	{
 		if (player.ordinal() > PlayerIndex.One.ordinal())
+		{
 			throw new InvalidOperationException();
-		
+		}
+
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Begins the process for displaying the storage device selector user interface; specifies the callback implemented when the player chooses a device.
 	 * 
@@ -128,11 +130,13 @@ public final class StorageDevice
 	public static IAsyncResult BeginShowSelector(PlayerIndex player, AsyncCallback callback, Object state)
 	{
 		if (player.ordinal() > PlayerIndex.One.ordinal())
+		{
 			throw new InvalidOperationException();
-		
+		}
+
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * 
 	 * @param titleName
@@ -142,7 +146,7 @@ public final class StorageDevice
 	{
 		// TODO: implement
 	}
-	
+
 	/**
 	 * Ends the process for opening a StorageContainer.
 	 * 
@@ -152,11 +156,13 @@ public final class StorageDevice
 	public StorageContainer EndOpenContainer(IAsyncResult result)
 	{
 		if (result == null)
+		{
 			throw new ArgumentNullException("result");
-		
+		}
+
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Ends the display of the storage selector user interface.
 	 * 
@@ -166,8 +172,10 @@ public final class StorageDevice
 	public static StorageDevice EndShowSelector(IAsyncResult result)
 	{
 		if (result == null)
+		{
 			throw new ArgumentNullException("result");
-		
+		}
+
 		throw new NotImplementedException();
 	}
 }

@@ -12,7 +12,7 @@ import java.util.*;
 public class Event<T extends EventArgs>
 {
 	private List<EventHandler<T>> handlers;
-	
+
 	/**
 	 * Use this to determine whether you can actually raise the event,
 	 * since if the list is empty, you'll get an InvalidOperationException.
@@ -21,7 +21,7 @@ public class Event<T extends EventArgs>
 	{
 		return !handlers.isEmpty();
 	}
-	
+
 	/**
 	 * Creates a new instance of this Object.
 	 */
@@ -29,7 +29,7 @@ public class Event<T extends EventArgs>
 	{
 		handlers = new ArrayList<EventHandler<T>>();
 	}
-	
+
 	/**
 	 * Adds a handler for this event
 	 * 
@@ -40,7 +40,7 @@ public class Event<T extends EventArgs>
 	{
 		this.handlers.add(handler);
 	}
-	
+
 	/**
 	 * Removes the specified handler for this event
 	 * 
@@ -52,11 +52,13 @@ public class Event<T extends EventArgs>
 	public synchronized void removeHandler(EventHandler<T> handler)
 	{
 		if (this.handlers.isEmpty())
+		{
 			throw new InvalidOperationException("Cannot remove event handler because none have been assigned.");
-		
+		}
+
 		this.handlers.remove(handler);
 	}
-	
+
 	/**
 	 * Raises the event.
 	 * 
@@ -64,7 +66,7 @@ public class Event<T extends EventArgs>
 	 * The Object that raised the event.
 	 * 
 	 * @param e
-	 * An instance of System.EventArgs that provides information about the event.
+	 * An instance of {@link System.EventArgs} that provides information about the event.
 	 * 
 	 * @throws InvalidOperationException
 	 * Thrown when the event is raised with no event handlers assigned.
@@ -72,8 +74,10 @@ public class Event<T extends EventArgs>
 	public synchronized void raise(Object sender, T e)
 	{
 		if (this.handlers.isEmpty())
+		{
 			throw new InvalidOperationException("Trying to raise an event without Event Handlers.");
-		
+		}
+
 		for (EventHandler<T> handler : handlers)
 		{
 			handler.Invoke(sender, e);

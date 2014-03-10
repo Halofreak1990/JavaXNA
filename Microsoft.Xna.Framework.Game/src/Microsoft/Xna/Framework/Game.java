@@ -90,15 +90,15 @@ public class Game implements IDisposable
 	public boolean getIsActive()
 	{
 		boolean isVisible = false;
-		
+
 		if (GamerServicesDispatcher.IsInitialized())
 		{
 			isVisible = Guide.IsVisible();
 		}
-		
+
 		return isActive;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -106,7 +106,7 @@ public class Game implements IDisposable
 	{
 		return isMouseVisible;
 	}
-	
+
 	/**
 	 * 
 	 * @param value
@@ -378,7 +378,7 @@ public class Game implements IDisposable
 		
 		if (isFixedTimeStep)
 		{
-			while (elapsedUpdateTime.CompareTo(TargetElapsedTime) == -1)
+			while (elapsedUpdateTime.compareTo(TargetElapsedTime) == -1)
 			{
 				try
 				{
@@ -401,7 +401,7 @@ public class Game implements IDisposable
 		
 		elapsedUpdateTime = TimeSpan.FromMilliseconds(getTicks() - gameTime.getTotalGameTime().getTotalMilliseconds());
 		
-		if (isFixedTimeStep && elapsedUpdateTime.CompareTo(TargetElapsedTime) == 1)
+		if (isFixedTimeStep && elapsedUpdateTime.compareTo(TargetElapsedTime) == 1)
 		{
 			gameTime.setIsRunningSlowly(true);
 		}

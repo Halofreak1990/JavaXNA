@@ -11,7 +11,7 @@ public class EventArgs
 	 * Represents an event with no event data.
 	 */
 	public static final EventArgs Empty = new EventArgs();
-	
+
 	/**
 	 * Initializes a new Instance of the System.EventArgs class.
 	 */
