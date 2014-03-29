@@ -144,7 +144,7 @@ public final class StorageDevice
 	 */
 	public void DeleteContainer(String titleName)
 	{
-		// TODO: implement
+		throw new NotImplementedException();
 	}
 
 	/**

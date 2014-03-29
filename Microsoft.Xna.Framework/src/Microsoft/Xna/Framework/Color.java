@@ -13,7 +13,7 @@ import Microsoft.Xna.Framework.Graphics.PackedVector.*;
 public final class Color extends ValueType implements IEquatable<Color>
 {
 	private int packedValue;
-	
+
 	/**
 	 * Creates a new instance of the class.
 	 * 
@@ -24,7 +24,7 @@ public final class Color extends ValueType implements IEquatable<Color>
 	{
 		this.packedValue = PackHelper(vector.X, vector.Y, vector.Z, 1f);
 	}
-	
+
 	/**
 	 * Creates a new instance of the class.
 	 * 
@@ -35,12 +35,12 @@ public final class Color extends ValueType implements IEquatable<Color>
 	{
 		this.packedValue = PackHelper(vector.X, vector.Y, vector.Z, vector.W);
 	}
-	
+
 	private Color(int packedValue)
 	{
 		this.packedValue = packedValue;
 	}
-	
+
 	/**
 	 * Creates a new instance of the class.
 	 * 
@@ -56,16 +56,18 @@ public final class Color extends ValueType implements IEquatable<Color>
 	public Color(int r, int g, int b)
 	{
 		if ((((r | g) | b) & -256) != 0)
-	    {
-	        r = ClampToByte64((long) r);
-	        g = ClampToByte64((long) g);
-	        b = ClampToByte64((long) b);
-	    }
-	    g = g << 8;
-	    b = b << 0x10;
-	    this.packedValue = (int)(((r | g) | b) | -16777216);
+		{
+			r = ClampToByte64((long) r);
+			g = ClampToByte64((long) g);
+			b = ClampToByte64((long) b);
+		}
+
+		g = g << 8;
+		b = b << 0x10;
+
+		this.packedValue = (int)(((r | g) | b) | -16777216);
 	}
-	
+
 	/**
 	 * Creates a new instance of the class.
 	 * 
@@ -80,9 +82,9 @@ public final class Color extends ValueType implements IEquatable<Color>
 	 */
 	public Color(float r, float g, float b)
 	{
-	    this.packedValue = PackHelper(r, g, b, 1f);
+		this.packedValue = PackHelper(r, g, b, 1f);
 	}
-	
+
 	/**
 	 * Creates a new instance of the class.
 	 * 
@@ -101,18 +103,20 @@ public final class Color extends ValueType implements IEquatable<Color>
 	public Color(int r, int g, int b, int a)
 	{
 		if (((((r | g) | b) | a) & -256) != 0)
-	    {
-	        r = ClampToByte32(r);
-	        g = ClampToByte32(g);
-	        b = ClampToByte32(b);
-	        a = ClampToByte32(a);
-	    }
-	    g = g << 8;
-	    b = b << 0x10;
-	    a = a << 0x18;
-	    this.packedValue = (int)(((r | g) | b) | a);
+		{
+			r = ClampToByte32(r);
+			g = ClampToByte32(g);
+			b = ClampToByte32(b);
+			a = ClampToByte32(a);
+		}
+
+		g = g << 8;
+		b = b << 0x10;
+		a = a << 0x18;
+
+		this.packedValue = (int)(((r | g) | b) | a);
 	}
-	
+
 	/**
 	 * Creates a new instance of the class.
 	 * 
@@ -130,9 +134,9 @@ public final class Color extends ValueType implements IEquatable<Color>
 	 */
 	public Color(float r, float g, float b, float a)
 	{
-	    this.packedValue = PackHelper(r, g, b, a);
+		this.packedValue = PackHelper(r, g, b, a);
 	}
-	
+
 	public Color()
 	{
 		this.packedValue = Transparent.packedValue;
@@ -140,30 +144,34 @@ public final class Color extends ValueType implements IEquatable<Color>
 
 	private static int ClampToByte32(int value)
 	{
-	    if (value < 0)
-	    {
-	        return 0;
-	    }
-	    if (value > 0xff)
-	    {
-	        return 0xff;
-	    }
-	    return value;
+		if (value < 0)
+		{
+			return 0;
+		}
+
+		if (value > 0xff)
+		{
+			return 0xff;
+		}
+
+		return value;
 	}
-	
+
 	private static int ClampToByte64(long value)
 	{
-	    if (value < 0L)
-	    {
-	        return 0;
-	    }
-	    if (value > 0xffL)
-	    {
-	        return 0xff;
-	    }
-	    return (int) value;
+		if (value < 0L)
+		{
+			return 0;
+		}
+
+		if (value > 0xffL)
+		{
+			return 0xff;
+		}
+
+		return (int) value;
 	}
-	
+
 	/**
 	 * 
 	 * @param obj
@@ -172,12 +180,12 @@ public final class Color extends ValueType implements IEquatable<Color>
 	{
 		return ((obj != null) && (obj instanceof Color)) ? (this.packedValue == ((Color)obj).packedValue) : false;
 	}
-	
+
 	public boolean Equals(Color other)
 	{
 		return this.packedValue == other.packedValue;
 	}
-	
+
 	/**
 	 * Convert a non premultiplied color into color data that contains alpha.
 	 * 
@@ -186,9 +194,9 @@ public final class Color extends ValueType implements IEquatable<Color>
 	 */
 	public static Color FromNonPremultiplied(Vector4 vector)
 	{
-	    return new Color(PackHelper(vector.X * vector.W, vector.Y * vector.W, vector.Z * vector.W, vector.W));
+		return new Color(PackHelper(vector.X * vector.W, vector.Y * vector.W, vector.Z * vector.W, vector.W));
 	}
-	
+
 	/**
 	 * Converts a non-premultiplied alpha color to a color that contains premultiplied alpha.
 	 * 
@@ -206,16 +214,17 @@ public final class Color extends ValueType implements IEquatable<Color>
 	 */
 	public static Color FromNonPremultiplied(int r, int g, int b, int a)
 	{
-	    r = ClampToByte64((r * a) / 0xffL);
-	    g = ClampToByte64((g * a) / 0xffL);
-	    b = ClampToByte64((b * a) / 0xffL);
-	    a = ClampToByte32(a);
-	    g = g << 8;
-	    b = b << 0x10;
-	    a = a << 0x18;
-	    return new Color((int)(((r | g) | b) | a));
+		r = ClampToByte64((r * a) / 0xffL);
+		g = ClampToByte64((g * a) / 0xffL);
+		b = ClampToByte64((b * a) / 0xffL);
+		a = ClampToByte32(a);
+		g = g << 8;
+		b = b << 0x10;
+		a = a << 0x18;
+
+		return new Color((int)(((r | g) | b) | a));
 	}
-	
+
 	/**
 	 * Serves as a hash function for a particular type.
 	 */
@@ -224,7 +233,7 @@ public final class Color extends ValueType implements IEquatable<Color>
 	{
 		return this.packedValue;
 	}
-	
+
 	/**
 	 * Linearly interpolate a color.
 	 * 
@@ -239,26 +248,26 @@ public final class Color extends ValueType implements IEquatable<Color>
 	 */
 	public static Color Lerp(Color value1, Color value2, float amount)
 	{
-	    Color color = new Color(Transparent.getPackedValue());
-	    long packedValue = value1.packedValue;
-	    long num2 = value2.packedValue;
-	    int num7 = (byte) packedValue;
-	    int num6 = (byte) (packedValue >> 8);
-	    int num5 = (byte) (packedValue >> 0x10);
-	    int num4 = (byte) (packedValue >> 0x18);
-	    int num15 = (byte) num2;
-	    int num14 = (byte) (num2 >> 8);
-	    int num13 = (byte) (num2 >> 0x10);
-	    int num12 = (byte) (num2 >> 0x18);
-	    int num = (int) PackUtils.PackUNorm(65536f, amount);
-	    int num11 = num7 + (((num15 - num7) * num) >> 0x10);
-	    int num10 = num6 + (((num14 - num6) * num) >> 0x10);
-	    int num9 = num5 + (((num13 - num5) * num) >> 0x10);
-	    int num8 = num4 + (((num12 - num4) * num) >> 0x10);
-	    color.packedValue = (int)(((num11 | (num10 << 8)) | (num9 << 0x10)) | (num8 << 0x18));
-	    return color;
+		Color color = new Color(Transparent.getPackedValue());
+		long packedValue = value1.packedValue;
+		long num2 = value2.packedValue;
+		int num7 = (byte) packedValue;
+		int num6 = (byte) (packedValue >> 8);
+		int num5 = (byte) (packedValue >> 0x10);
+		int num4 = (byte) (packedValue >> 0x18);
+		int num15 = (byte) num2;
+		int num14 = (byte) (num2 >> 8);
+		int num13 = (byte) (num2 >> 0x10);
+		int num12 = (byte) (num2 >> 0x18);
+		int num = (int) PackUtils.PackUNorm(65536f, amount);
+		int num11 = num7 + (((num15 - num7) * num) >> 0x10);
+		int num10 = num6 + (((num14 - num6) * num) >> 0x10);
+		int num9 = num5 + (((num13 - num5) * num) >> 0x10);
+		int num8 = num4 + (((num12 - num4) * num) >> 0x10);
+		color.packedValue = (int)(((num11 | (num10 << 8)) | (num9 << 0x10)) | (num8 << 0x18));
+		return color;
 	}
-	
+
 	/**
 	 * Multiply each color component by the scale factor.
 	 * 
@@ -270,64 +279,72 @@ public final class Color extends ValueType implements IEquatable<Color>
 	 */
 	public static Color Multiply(Color value, float scale)
 	{
-	    int num;
-	    Color color = new Color(Transparent.getPackedValue());
-	    int packedValue = value.packedValue;
-	    int num5 = (byte) packedValue;
-	    int num4 = (byte) (packedValue >> 8);
-	    int num3 = (byte) (packedValue >> 0x10);
-	    int num2 = (byte) (packedValue >> 0x18);
-	    scale *= 65536f;
-	    if (scale < 0f)
-	    {
-	        num = 0;
-	    }
-	    else if (scale > 1.677722E+07f)
-	    {
-	        num = 0xffffff;
-	    }
-	    else
-	    {
-	        num = (int)scale;
-	    }
-	    num5 = (num5 * num) >> 0x10;
-	    num4 = (num4 * num) >> 0x10;
-	    num3 = (num3 * num) >> 0x10;
-	    num2 = (num2 * num) >> 0x10;
-	    if (num5 > 0xff)
-	    {
-	        num5 = 0xff;
-	    }
-	    if (num4 > 0xff)
-	    {
-	        num4 = 0xff;
-	    }
-	    if (num3 > 0xff)
-	    {
-	        num3 = 0xff;
-	    }
-	    if (num2 > 0xff)
-	    {
-	        num2 = 0xff;
-	    }
-	    color.packedValue = ((num5 | (num4 << 8)) | (num3 << 0x10)) | (num2 << 0x18);
-	    return color;
+		int num;
+		Color color = new Color(Transparent.getPackedValue());
+		int packedValue = value.packedValue;
+		int num5 = (byte) packedValue;
+		int num4 = (byte) (packedValue >> 8);
+		int num3 = (byte) (packedValue >> 0x10);
+		int num2 = (byte) (packedValue >> 0x18);
+		scale *= 65536f;
+
+		if (scale < 0f)
+		{
+			num = 0;
+		}
+		else if (scale > 1.677722E+07f)
+		{
+			num = 0xffffff;
+		}
+		else
+		{
+			num = (int)scale;
+		}
+
+		num5 = (num5 * num) >> 0x10;
+		num4 = (num4 * num) >> 0x10;
+		num3 = (num3 * num) >> 0x10;
+		num2 = (num2 * num) >> 0x10;
+
+		if (num5 > 0xff)
+		{
+			num5 = 0xff;
+		}
+
+		if (num4 > 0xff)
+		{
+			num4 = 0xff;
+		}
+
+		if (num3 > 0xff)
+		{
+			num3 = 0xff;
+		}
+
+		if (num2 > 0xff)
+		{
+			num2 = 0xff;
+		}
+
+		color.packedValue = ((num5 | (num4 << 8)) | (num3 << 0x10)) | (num2 << 0x18);
+		return color;
 	}
-	
+
 	static int InitializeFromArgb(byte a, byte r, byte g, byte b)
 	{
 		return (int)(a << 24) + (int)(r << 16) + (int)(g << 8) + b;
 	}
-	
+
 	private static int PackHelper(float vectorX, float vectorY, float vectorZ, float vectorW)
 	{
-	    int num4 = PackUtils.PackUNorm(255f, vectorX);
-	    int num3 = PackUtils.PackUNorm(255f, vectorY) << 8;
-	    int num2 = PackUtils.PackUNorm(255f, vectorZ) << 0x10;
-	    int num = PackUtils.PackUNorm(255f, vectorW) << 0x18;
-	    return (((num4 | num3) | num2) | num);
+		int num4 = PackUtils.PackUNorm(255f, vectorX);
+		int num3 = PackUtils.PackUNorm(255f, vectorY) << 8;
+		int num2 = PackUtils.PackUNorm(255f, vectorZ) << 0x10;
+		int num = PackUtils.PackUNorm(255f, vectorW) << 0x18;
+
+		return (((num4 | num3) | num2) | num);
 	}
-	
+
 	/**
 	 * Gets a string representation of this object.
 	 */
@@ -336,32 +353,32 @@ public final class Color extends ValueType implements IEquatable<Color>
 	{
 		return String.format(Locale.getDefault(), "{R:%d G:%d B:%d A:%d}", this.R(), this.G(), this.B(), this.A());
 	}
-	
+
 	/**
 	 * Gets a three-component vector representation for this object.
 	 */
 	public Vector3 ToVector3()
 	{
 		Vector3 vector = new Vector3();
-	    vector.X = PackUtils.UnpackUNorm(0xff, this.packedValue);
-	    vector.Y = PackUtils.UnpackUNorm(0xff, this.packedValue >> 8);
-	    vector.Z = PackUtils.UnpackUNorm(0xff, this.packedValue >> 0x10);
-	    return vector;
+		vector.X = PackUtils.UnpackUNorm(0xff, this.packedValue);
+		vector.Y = PackUtils.UnpackUNorm(0xff, this.packedValue >> 8);
+		vector.Z = PackUtils.UnpackUNorm(0xff, this.packedValue >> 0x10);
+		return vector;
 	}
-	
+
 	/**
 	 * Gets a four-component vector representation for this object.
 	 */
 	public Vector4 ToVector4()
 	{
 		Vector4 vector = new Vector4();
-	    vector.X = PackUtils.UnpackUNorm(0xff, this.packedValue);
-	    vector.Y = PackUtils.UnpackUNorm(0xff, this.packedValue >> 8);
-	    vector.Z = PackUtils.UnpackUNorm(0xff, this.packedValue >> 0x10);
-	    vector.W = PackUtils.UnpackUNorm(0xff, this.packedValue >> 0x18);
-	    return vector;
+		vector.X = PackUtils.UnpackUNorm(0xff, this.packedValue);
+		vector.Y = PackUtils.UnpackUNorm(0xff, this.packedValue >> 8);
+		vector.Z = PackUtils.UnpackUNorm(0xff, this.packedValue >> 0x10);
+		vector.W = PackUtils.UnpackUNorm(0xff, this.packedValue >> 0x18);
+		return vector;
 	}
-	
+
 	/**
 	 * Gets the Alpha component of this Color.
 	 */

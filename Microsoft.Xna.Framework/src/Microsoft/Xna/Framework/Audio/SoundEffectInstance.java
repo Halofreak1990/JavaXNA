@@ -158,6 +158,7 @@ public class SoundEffectInstance implements IDisposable
 	{
 		this.currentVolume = 1f;
 		this.VoiceHandleLock = new Object();
+
 		if (parentEffect.IsDisposed())
 		{
 			throw new ObjectDisposedException(SoundEffect.class.getName(), "This object has already been disposed.");

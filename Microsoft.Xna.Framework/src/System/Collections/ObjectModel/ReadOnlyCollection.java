@@ -15,7 +15,7 @@ import System.*;
 public class ReadOnlyCollection<T> implements Iterable<T>
 {
 	private List<T> collection;
-	
+
 	/**
 	 * Initializes a new instance of the System.Collections.ObjectModel.ReadOnlyCollection<T> class that is a read-only wrapper around the specified list.
 	 * 
@@ -31,10 +31,10 @@ public class ReadOnlyCollection<T> implements Iterable<T>
 		{
 			throw new ArgumentNullException("list");
 		}
-		
+
 		collection = list;
 	}
-	
+
 	/**
 	 * Gets the number of elements contained in the System.Collections.ObjectModel.ReadOnlyCollection<T> instance.
 	 */
@@ -42,7 +42,7 @@ public class ReadOnlyCollection<T> implements Iterable<T>
 	{
 		return collection.size();
 	}
-	
+
 	/**
 	 * Returns the System.Collections.Generic.IList<T> that the System.Collections.ObjectModel.ReadOnlyCollection<T> wraps.
 	 * 
@@ -53,7 +53,7 @@ public class ReadOnlyCollection<T> implements Iterable<T>
 	{
 		return collection;
 	}
-	
+
 	/**
 	 * Gets the element at the specified index.
 	 * 
@@ -72,10 +72,10 @@ public class ReadOnlyCollection<T> implements Iterable<T>
 		{
 			throw new ArgumentOutOfRangeException("index");
 		}
-		
+
 		return collection.get(index);
 	}
-	
+
 	/**
 	 * Determines whether an element is in the System.Collections.ObjectModel.ReadOnlyCollection<T>.
 	 * 
@@ -89,7 +89,7 @@ public class ReadOnlyCollection<T> implements Iterable<T>
 	{
 		return (IndexOf(value) != -1);
 	}
-	
+
 	/**
 	 * Copies the entire System.Collections.ObjectModel.ReadOnlyCollection<T> to a compatible one-dimensional System.Array, starting at the specified index of the target array.
 	 * 
@@ -105,13 +105,13 @@ public class ReadOnlyCollection<T> implements Iterable<T>
 		{
 			throw new ArgumentNullException();
 		}
-		
+
 		// TODO: verify
 		if ((index + collection.size()) > array.length)
 		{
 			throw new ArgumentException("");
 		}
-		
+
 		System.arraycopy(collection, 0, array, index, collection.size());
 	}
 
@@ -123,7 +123,7 @@ public class ReadOnlyCollection<T> implements Iterable<T>
 	{
 		return collection.iterator();
 	}
-	
+
 	/**
 	 * Searches for the specified object and returns the zero-based index of the first occurrence within the entire System.Collections.ObjectModel.ReadOnlyCollection<T>.
 	 * 

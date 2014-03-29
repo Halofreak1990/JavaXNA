@@ -21,8 +21,7 @@ public final class Album implements IEquatable<Album>, IDisposable
 	private SongCollection songs;
 
 	/**
-	 * 
-	 * @return
+	 * Gets the Artist of the Album.
 	 */
 	public Artist getArtist()
 	{
@@ -34,10 +33,53 @@ public final class Album implements IEquatable<Album>, IDisposable
 		return this.artist;
 	}
 
+	/**
+	 * Gets the duration of the Album.
+	 */
+	public TimeSpan getDuration()
+	{
+		return this.duration;
+	}
+
+	/**
+	 * Gets the Genre of the Album.
+	 */
+	public Genre getGenre()
+	{
+		return this.genre;
+	}
+
+	/**
+	 * Gets a value indicating whether the Album has associated album art.
+	 */
 	public boolean HasArt()
 	{
 		ThrowIfDisposed();
 		return this.hasArt;
+	}
+
+	/**
+	 * Gets a value indicating whether the object is disposed.
+	 */
+	public boolean IsDisposed()
+	{
+		return this.isDisposed;
+	}
+
+	/**
+	 * Gets the name of the Album.
+	 */
+	public String getName()
+	{
+		return this.name;
+	}
+
+	/**
+	 * Gets a SongCollection that contains the songs on the album.
+	 */
+	public SongCollection getSongs()
+	{
+		return this.songs;
 	}
 
 	private Album()
@@ -49,15 +91,20 @@ public final class Album implements IEquatable<Album>, IDisposable
 		this.duration = TimeSpan.Zero;
 	}
 
-    /*
-    Album(uint handle)
-    {
-	    this.name = string.Empty;
-	    this.artist = Artist.Empty;
-	    this.genre = Genre.Empty;
-	    this.songs = SongCollection.Empty;
-	    this.duration = TimeSpan.Zero;
-    }*/
+	/*
+	Album(uint handle)
+	{
+		this.name = string.Empty;
+		this.artist = Artist.Empty;
+		this.genre = Genre.Empty;
+		this.songs = SongCollection.Empty;
+		this.duration = TimeSpan.Zero;
+	}*/
+
+	protected void finalize()
+	{
+		this.Dispose(false);
+	}
 
 	/**
 	 * Immediately releases the unmanaged resources used by this object.
@@ -80,6 +127,14 @@ public final class Album implements IEquatable<Album>, IDisposable
 		}
 	}
 
+	private void ThrowIfDisposed()
+	{
+		if (this.isDisposed)
+		{
+			throw new ObjectDisposedException(this.getClass().toString(), "This object has already been disposed.");
+		}
+	}
+
 	/**
 	 * Determines whether the specified Object is equal to this Album.
 	 * 
@@ -89,7 +144,7 @@ public final class Album implements IEquatable<Album>, IDisposable
 	@Override
 	public boolean equals(Object obj)
 	{
-		return (obj instanceof Album) ? (this == (Album)obj) : false;
+		return (obj != null && obj instanceof Album) ? this.Equals((Album)obj) : false;
 	}
 
 	/**
@@ -103,11 +158,6 @@ public final class Album implements IEquatable<Album>, IDisposable
 	{
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	protected void finalize()
-	{
-		this.Dispose(false);
 	}
 
 	/**
@@ -126,20 +176,13 @@ public final class Album implements IEquatable<Album>, IDisposable
 		return this.hashcode;
 	}
 
-	private void ThrowIfDisposed()
-	{
-		if (this.isDisposed)
-		{
-			throw new ObjectDisposedException(this.getClass().toString(), "This object has already been disposed.");
-		}
-	}
-
 	/**
 	 * Returns a String representation of this Album.
 	 */
 	public String toString()
 	{
 		ThrowIfDisposed();
+
 		return this.name;
 	}
 }

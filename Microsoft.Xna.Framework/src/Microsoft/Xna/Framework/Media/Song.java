@@ -13,9 +13,32 @@ public final class Song implements IEquatable<Song>, IDisposable
 	private Artist artist;
 	private boolean isDisposed;
 
+	/**
+	 * Gets the Album on which the Song appears.
+	 */
+	public Album getAlbum()
+	{
+		return this.album;
+	}
+
+	/**
+	 * Gets the Artist of the Song.
+	 */
+	public Artist getArtist()
+	{
+		return this.artist;
+	}
+
+	/**
+	 * Gets a value indicating whether the object is disposed.
+	 */
+	public boolean IsDisposed()
+	{
+		return this.isDisposed;
+	}
+
 	private Song()
 	{
-		
 	}
 
 	Song(String name, String fileName, int duration)
@@ -43,7 +66,7 @@ public final class Song implements IEquatable<Song>, IDisposable
 	@Override
 	public boolean equals(Object obj)
 	{
-		return (obj instanceof Song) ? Equals((Song)obj) : false;
+		return (obj != null && obj instanceof Song) ? this.Equals((Song)obj) : false;
 	}
 
 	/**
@@ -75,6 +98,7 @@ public final class Song implements IEquatable<Song>, IDisposable
 	 */
 	public static Song FromUri(String name, Uri uri)
 	{
+		// TODO Auto-generated method stub
 		throw new NotImplementedException();
 	}
 
@@ -85,6 +109,7 @@ public final class Song implements IEquatable<Song>, IDisposable
 	@Override
 	public int hashCode()
 	{
+		// TODO Auto-generated method stub
 		throw new NotImplementedException();
 	}
 
@@ -102,6 +127,7 @@ public final class Song implements IEquatable<Song>, IDisposable
 	@Override
 	public String toString()
 	{
+		// TODO Auto-generated method stub
 		throw new NotImplementedException();
 	}
 }

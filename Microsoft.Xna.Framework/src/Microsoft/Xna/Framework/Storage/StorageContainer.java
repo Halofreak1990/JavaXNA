@@ -14,12 +14,12 @@ public class StorageContainer implements IDisposable
 	String displayName;
 	private boolean isDisposed;
 	StorageDevice parent;
-	
+
 	/**
 	 * Occurs when Dispose is called or when this object is finalized and collected by the garbage collector of the Microsoft .NET common language runtime.
 	 */
 	public final Event<EventArgs> Disposing = new Event<EventArgs>();
-	
+
 	/**
 	 * Gets the name of the title.
 	 */
@@ -27,7 +27,7 @@ public class StorageContainer implements IDisposable
 	{
 		return displayName;
 	}
-	
+
 	/**
 	 * Gets a value that indicates whether the object is disposed.
 	 */
@@ -35,7 +35,7 @@ public class StorageContainer implements IDisposable
 	{
 		return isDisposed;
 	}
-	
+
 	/**
 	 * Gets the StorageDevice that holds the files in this container.
 	 */
@@ -43,7 +43,7 @@ public class StorageContainer implements IDisposable
 	{
 		return parent;
 	}
-	
+
 	/**
 	 * Allows this object to attempt to free resources and perform other cleanup operations before garbage collection reclaims the object.
 	 */
@@ -54,18 +54,18 @@ public class StorageContainer implements IDisposable
 			// TODO: implement
 		}
 	}
-	
+
 	/**
 	 * Creates a new directory in the StorageContainer scope.
 	 * 
 	 * @param directory
-	 * The relative path of the directory to delete within the StorageContainer scope.
+	 * The relative path of the directory to create within the StorageContainer scope.
 	 */
 	public void CreateDirectory(String directory)
 	{
 		// TODO: implement
 	}
-	
+
 	/**
 	 * Creates a file at a specified path in the StorageContainer.
 	 * 
@@ -76,7 +76,7 @@ public class StorageContainer implements IDisposable
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Deletes a directory in the StorageContainer scope.
 	 * 
@@ -87,7 +87,7 @@ public class StorageContainer implements IDisposable
 	{
 		// TODO: implement
 	}
-	
+
 	/**
 	 * Deletes a file in the StorageContainer.
 	 * 
@@ -98,7 +98,7 @@ public class StorageContainer implements IDisposable
 	{
 		// TODO: implement
 	}
-	
+
 	/**
 	 * Determines whether the specified path refers to an existing directory in the StorageContainer.
 	 * 
@@ -109,7 +109,7 @@ public class StorageContainer implements IDisposable
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Immediately releases the unmanaged resources used by this object.
 	 */
@@ -119,7 +119,7 @@ public class StorageContainer implements IDisposable
 		
 		this.isDisposed = true;
 	}
-	
+
 	/**
 	 * Determines whether the specified path refers to an existing file in the StorageContainer.
 	 * 
@@ -130,7 +130,7 @@ public class StorageContainer implements IDisposable
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Enumerates the directories in the root of a StorageContainer that conform to a search pattern.
 	 * 
@@ -141,7 +141,7 @@ public class StorageContainer implements IDisposable
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Enumerates the directories in the root of a StorageContainer.
 	 */
@@ -149,7 +149,7 @@ public class StorageContainer implements IDisposable
 	{
 		return this.GetDirectoryNames("*");
 	}
-	
+
 	/**
 	 * Enumerates files in the root directory of a StorageContainer that match a given pattern.
 	 * 
@@ -160,7 +160,7 @@ public class StorageContainer implements IDisposable
 	{
 		throw new NotImplementedException();
 	}
-	
+
 	/**
 	 * Enumerates files in the root directory of a StorageContainer.
 	 */
@@ -168,6 +168,4 @@ public class StorageContainer implements IDisposable
 	{
 		return this.GetFileNames("*");
 	}
-	
-	
 }

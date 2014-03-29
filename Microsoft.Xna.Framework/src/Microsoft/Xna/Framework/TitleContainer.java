@@ -50,6 +50,7 @@ public class TitleContainer
 		}
 
 		int startIndex = 1;
+
 		while(startIndex < path.length())
 		{
 			startIndex = path.indexOf("\\..\\", startIndex);

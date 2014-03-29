@@ -14,6 +14,23 @@ public class MediaPlayer
 	private static MediaQueue queue;
 
 	/**
+	 * Gets the media playback queue, MediaQueue.
+	 */
+	public static MediaQueue getQueue()
+	{
+		return queue;
+	}
+
+	/**
+	 * Gets the media playback state.
+	 */
+	public MediaState getState()
+	{
+		// TODO Auto-generated method stub
+		throw new NotImplementedException();
+	}
+
+	/**
 	 * Raised when the active song changes due to active playback or due to explicit calls to the MoveNext or MovePrevious methods.
 	 */
 	public static final Event<EventArgs> ActiveSongChanged = new Event<EventArgs>();
@@ -22,6 +39,17 @@ public class MediaPlayer
 	 * Raised when the media player play state changes.
 	 */
 	public static final Event<EventArgs> MediaStateChanged = new Event<EventArgs>();
+
+	static
+	{
+		repeat = false;
+		shuffle = false;
+		queue = new MediaQueue();
+	}
+
+	private MediaPlayer()
+	{
+	}
 
 	/**
 	 * 
@@ -32,6 +60,8 @@ public class MediaPlayer
 		{
 			ActiveSongChanged.raise(null, EventArgs.Empty);
 		}
+
+		// TODO: implement
 	}
 
 	/**
@@ -43,6 +73,8 @@ public class MediaPlayer
 		{
 			ActiveSongChanged.raise(null, EventArgs.Empty);
 		}
+
+		// TODO: implement
 	}
 
 	/**
@@ -54,6 +86,8 @@ public class MediaPlayer
 		{
 			MediaStateChanged.raise(null, EventArgs.Empty);
 		}
+
+		// TODO: implement
 	}
 
 	/**
@@ -62,7 +96,8 @@ public class MediaPlayer
 	 */
 	public static void Play(Song song)
 	{
-		
+		// TODO Auto-generated method stub
+		throw new NotImplementedException();
 	}
 
 	/**
@@ -71,7 +106,8 @@ public class MediaPlayer
 	 */
 	public static void Play(SongCollection songs)
 	{
-		
+		// TODO Auto-generated method stub
+		throw new NotImplementedException();
 	}
 
 	/**
@@ -81,7 +117,8 @@ public class MediaPlayer
 	 */
 	public static void Play(SongCollection songs, int index)
 	{
-		
+		// TODO Auto-generated method stub
+		throw new NotImplementedException();
 	}
 
 	/**
@@ -93,6 +130,8 @@ public class MediaPlayer
 		{
 			MediaStateChanged.raise(null, EventArgs.Empty);
 		}
+
+		// TODO: implement
 	}
 
 	/**
@@ -104,12 +143,7 @@ public class MediaPlayer
 		{
 			MediaStateChanged.raise(null, EventArgs.Empty);
 		}
-	}
 
-	static
-	{
-		repeat = false;
-		shuffle = false;
-		queue = new MediaQueue();
+		// TODO: implement
 	}
 }

@@ -18,6 +18,14 @@ public final class Artist implements IEquatable<Artist>, IDisposable
 	private SongCollection songs;
 
 	/**
+	 * Gets the AlbumCollection for the Artist.
+	 */
+	public AlbumCollection getAlbums()
+	{
+		return this.albums;
+	}
+
+	/**
 	 * Gets a value indicating whether the object is disposed.
 	 */
 	public boolean IsDisposed()
@@ -34,6 +42,19 @@ public final class Artist implements IEquatable<Artist>, IDisposable
 		return this.name;
 	}
 
+	/**
+	 * Gets the SongCollection for the Artist.
+	 */
+	public SongCollection getSongs()
+	{
+		return this.songs;
+	}
+
+	static
+	{
+		Empty = new Artist();
+	}
+
 	private Artist()
 	{
 		//this.handle = uint.MaxValue;
@@ -45,21 +66,22 @@ public final class Artist implements IEquatable<Artist>, IDisposable
 
 	/*Artist(uint handle)
 	{
-	    this.handle = uint.MaxValue;
-	    this.hashcode = -1;
-	    this.name = "";
-	    this.songs = SongCollection.Empty;
-	    this.albums = AlbumCollection.Empty;
-	    this.handle = handle;
-	    
-	    if (this.IsValidHandle)
-	    {
-	        StringBuilder sbName = new StringBuilder(260);
-	        if (Helpers.Succeeded(UnsafeNativeMethods.MediaItem_GetName(handle, sbName, 260)))
-	        {
-	            this.name = sbName.ToString();
-	        }
-	    }
+		this.handle = uint.MaxValue;
+		this.hashcode = -1;
+		this.name = "";
+		this.songs = SongCollection.Empty;
+		this.albums = AlbumCollection.Empty;
+		this.handle = handle;
+		
+		if (this.IsValidHandle)
+		{
+			StringBuilder sbName = new StringBuilder(260);
+
+			if (Helpers.Succeeded(UnsafeNativeMethods.MediaItem_GetName(handle, sbName, 260)))
+			{
+				this.name = sbName.ToString();
+			}
+		}
 	}*/
 
 	@Override
@@ -67,51 +89,19 @@ public final class Artist implements IEquatable<Artist>, IDisposable
 	{
 		this.Dispose(true);
 	}
-	
+
 	private void Dispose(boolean disposing)
 	{
 		if (!this.isDisposed)
-	    {
-	        this.isDisposed = true;
-	        // TODO: implement
-	        /*if (this.IsValidHandle)
-	        {
-	            UnsafeNativeMethods.MediaItem_Release(this.handle);
-	            this.handle = uint.MaxValue;
-	        }*/
-	    }
-	}
-	
-	@Override
-	public boolean equals(Object obj)
-	{
-		return (obj instanceof Artist) ? (this == (Artist)obj) : false;
-	}
-	
-	@Override
-	public boolean Equals(Artist other)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-	
-	protected void finalize()
-	{
-		this.Dispose(false);
-	}
-	
-	/**
-	 * Gets the hash code for this instance.
-	 */
-	@Override
-	public int hashCode()
-	{
-		ThrowIfDisposed();
-		if (this.hashcode == -1)
 		{
-			this.hashcode = this.name.hashCode();
+			this.isDisposed = true;
+			// TODO: implement
+			/*if (this.IsValidHandle)
+			{
+				UnsafeNativeMethods.MediaItem_Release(this.handle);
+				this.handle = uint.MaxValue;
+			}*/
 		}
-		return this.hashcode;
 	}
 
 	private void ThrowIfDisposed()
@@ -122,6 +112,40 @@ public final class Artist implements IEquatable<Artist>, IDisposable
 		}
 	}
 
+	@Override
+	public boolean equals(Object obj)
+	{
+		return (obj != null && obj instanceof Artist) ? this.Equals((Artist)obj) : false;
+	}
+
+	@Override
+	public boolean Equals(Artist other)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	protected void finalize()
+	{
+		this.Dispose(false);
+	}
+
+	/**
+	 * Gets the hash code for this instance.
+	 */
+	@Override
+	public int hashCode()
+	{
+		ThrowIfDisposed();
+
+		if (this.hashcode == -1)
+		{
+			this.hashcode = this.name.hashCode();
+		}
+
+		return this.hashcode;
+	}
+
 	/**
 	 * Returns a String representation of the Artist.
 	 */
@@ -130,10 +154,5 @@ public final class Artist implements IEquatable<Artist>, IDisposable
 	{
 		ThrowIfDisposed();
 		return this.name;
-	}
-
-	static
-	{
-		Empty = new Artist();
 	}
 }
