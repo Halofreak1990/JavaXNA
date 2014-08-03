@@ -9,9 +9,10 @@ import System.*;
  */
 public class MediaPlayer
 {
+	private static MediaQueue queue;
 	private static boolean repeat;
 	private static boolean shuffle;
-	private static MediaQueue queue;
+	private static MediaState state;
 
 	/**
 	 * Gets the media playback queue, MediaQueue.
@@ -26,8 +27,20 @@ public class MediaPlayer
 	 */
 	public MediaState getState()
 	{
-		// TODO Auto-generated method stub
-		throw new NotImplementedException();
+		return state;
+	}
+
+	private static void setState(MediaState value)
+	{
+		if (state != value)
+		{
+			state = value;
+
+			if (MediaStateChanged.hasHandlers())
+			{
+				MediaStateChanged.raise(null, EventArgs.Empty);
+			}
+		}
 	}
 
 	/**
@@ -51,48 +64,51 @@ public class MediaPlayer
 	{
 	}
 
+	private static void NextSong(int direction)
+	{
+		// TODO: implement
+
+		if (ActiveSongChanged.hasHandlers())
+		{
+			ActiveSongChanged.raise(null, EventArgs.Empty);
+		}
+	}
+
 	/**
-	 * 
+	 * Moves to the next song in the queue of playing songs.
 	 */
 	public static void MoveNext()
 	{
-		if (!ActiveSongChanged.hasHandlers())
-		{
-			ActiveSongChanged.raise(null, EventArgs.Empty);
-		}
-
-		// TODO: implement
+		NextSong(1);
 	}
 
 	/**
-	 * 
+	 * Moves to the previous song in the queue of playing songs.
 	 */
 	public static void MovePrevious()
 	{
-		if (!ActiveSongChanged.hasHandlers())
-		{
-			ActiveSongChanged.raise(null, EventArgs.Empty);
-		}
-
-		// TODO: implement
+		NextSong(-1);
 	}
 
 	/**
-	 * 
+	 * Pauses the currently playing song.
 	 */
 	public static void Pause()
 	{
-		if (!MediaStateChanged.hasHandlers())
+		if (state != MediaState.Playing || queue.getActiveSong() == null)
 		{
-			MediaStateChanged.raise(null, EventArgs.Empty);
+			return;
 		}
 
 		// TODO: implement
+		throw new NotImplementedException();
 	}
 
 	/**
+	 * Plays a Song.
 	 * 
 	 * @param song
+	 * Song to play.
 	 */
 	public static void Play(Song song)
 	{
@@ -101,8 +117,10 @@ public class MediaPlayer
 	}
 
 	/**
+	 * Plays a SongCollection.
 	 * 
 	 * @param songs
+	 * SongCollection to play.
 	 */
 	public static void Play(SongCollection songs)
 	{
@@ -111,9 +129,13 @@ public class MediaPlayer
 	}
 
 	/**
+	 * Plays a SongCollection, starting with the Song at the specified index.
 	 * 
 	 * @param songs
+	 * SongCollection to play.
+	 * 
 	 * @param index
+	 * Index of the song in the collection at which playback should begin.
 	 */
 	public static void Play(SongCollection songs, int index)
 	{
@@ -122,20 +144,21 @@ public class MediaPlayer
 	}
 
 	/**
-	 * 
+	 * Resumes a paused song.
 	 */
 	public static void Resume()
 	{
-		if (!MediaStateChanged.hasHandlers())
+		if (state != MediaState.Paused)
 		{
-			MediaStateChanged.raise(null, EventArgs.Empty);
+			return;
 		}
 
 		// TODO: implement
+		throw new NotImplementedException();
 	}
 
 	/**
-	 * 
+	 * Stops playing a song.
 	 */
 	public static void Stop()
 	{
@@ -145,5 +168,6 @@ public class MediaPlayer
 		}
 
 		// TODO: implement
+		throw new NotImplementedException();
 	}
 }
