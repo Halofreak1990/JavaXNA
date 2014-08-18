@@ -6,7 +6,6 @@ import java.util.*;
 import org.lwjgl.openal.*;
 
 import System.*;
-import System.IO.*;
 
 /**
  * Reference page contains links to related code samples.
@@ -15,6 +14,10 @@ import System.IO.*;
  */
 public final class SoundEffect implements IDisposable
 {
+	byte[] _data;
+	float Rate;
+	int Size;
+	int Format;
 	private static float currentVolume;
 	private static float distanceScale;
 	private static float dopplerScale;
@@ -28,7 +31,9 @@ public final class SoundEffect implements IDisposable
 	void ChildDestroyed(SoundEffectInstance instance)
 	{
 		if (children.contains(instance))
+		{
 			children.remove(instance);
+		}
 	}
 	
 	/**
@@ -45,7 +50,9 @@ public final class SoundEffect implements IDisposable
 	public static void setDistanceScale(float value)
 	{
 		if (value < 0)
+		{
 			throw new ArgumentOutOfRangeException("value");
+		}
 		
 		value = (value <= Float.MIN_NORMAL) ? Float.MIN_NORMAL : value;
 		distanceScale = value;
@@ -63,10 +70,12 @@ public final class SoundEffect implements IDisposable
 	/**
 	 * Sets a value that adjusts the effect of doppler calculations on the sound (emitter).
 	 */
-	public static void setDopplerScale(float value)
+	public synchronized static void setDopplerScale(float value)
 	{
 		if (value < 0f)
+		{
 			throw new ArgumentOutOfRangeException("value");
+		}
 		
 		dopplerScale = value;
 		AL10.alDopplerFactor(dopplerScale);
@@ -102,9 +111,13 @@ public final class SoundEffect implements IDisposable
 	public static void setMasterVolume(float value)
 	{
 		if (value < 0f || value > 1f)
+		{
 			throw new ArgumentOutOfRangeException("value");
+		}
 		
 		currentVolume = value;
+		
+		SoundEffectInstancePool.UpdateMasterVolume();
 	}
 	
 	static float getMaxVelocityComponent()
@@ -126,10 +139,14 @@ public final class SoundEffect implements IDisposable
 	public void setName(String value)
 	{
 		if (isDisposed)
+		{
 			throw new ObjectDisposedException(super.getClass().toString(), "");
+		}
 		
 		if (value == null || value == "")
+		{
 			throw new ArgumentNullException("value");
+		}
 		
 		this.effectName = value;
 	}
@@ -145,19 +162,29 @@ public final class SoundEffect implements IDisposable
 	/**
 	 * Sets the speed of sound.
 	 */
-	public static void setSpeedOfSound(float value)
+	public synchronized static void setSpeedOfSound(float value)
 	{
 		if (value <= 0f)
+		{
 			throw new ArgumentOutOfRangeException("value");
+		}
 		
 		speedOfSound = value;
 		maxVelocityComponent = speedOfSound - (speedOfSound / 1000f);
 		AL11.alSpeedOfSound(speedOfSound);
 	}
 	
-	private SoundEffect(Stream stream)
+	private SoundEffect(InputStream stream)
 	{
-		// TODO: implement
+		Integer format = null;
+		Integer size = null;
+		Integer freq = null;
+		
+        _data = AudioLoader.Load(stream, format, size, freq);
+        
+        Format = format;
+        Size = size;
+        Rate = freq;
 	}
 	
 	/**
@@ -175,13 +202,12 @@ public final class SoundEffect implements IDisposable
 	public SoundEffect(byte[] buffer, int sampleRate, AudioChannels channels)
 	{
 		if (buffer == null || buffer.length == 0)
+		{
 			throw new ArgumentException("Buffer is invalid. Ensure that the buffer length is non-zero and meets the block alignment requirements for the audio format.");
+		}
 		
-		// TODO: implement
-	}
-	
-	SoundEffect(byte[] format, byte[] data, int loopStart, int loopLength, TimeSpan duration)
-	{
+		duration = GetSampleDuration(buffer.length, sampleRate, channels);
+		
 		// TODO: implement
 	}
 	
@@ -211,7 +237,25 @@ public final class SoundEffect implements IDisposable
 	 */
 	public SoundEffect(byte[] buffer, int offset, int count, int sampleRate, AudioChannels channels, int loopStart, int loopLength)
 	{
+		duration = GetSampleDuration(count, sampleRate, channels);
+		
 		// TODO: implement
+	}
+	
+	SoundEffectInstance GetPooledInstance()
+	{
+		 if (!SoundEffectInstancePool.SoundsAvailable())
+		 {
+			 return null;
+		 }
+		 
+		 SoundEffectInstance inst = SoundEffectInstancePool.GetInstance();
+		 inst._effect = this;
+		 
+		 inst.InitializeSound();
+         inst.BindDataBuffer(_data, Format, Size, (int)Rate);
+		 
+		 return inst;
 	}
 	
 	/**
@@ -219,8 +263,15 @@ public final class SoundEffect implements IDisposable
 	 */
 	public synchronized SoundEffectInstance CreateInstance()
 	{
-		// TODO: implement
-		throw new NotImplementedException(); 
+		SoundEffectInstance inst = new SoundEffectInstance();
+
+		inst.InitializeSound();
+        inst.BindDataBuffer(_data, Format, Size, (int)Rate);
+
+        inst._isPooled = false;
+        inst._effect = this;
+
+        return inst;
 	}
 	
 	/**
@@ -236,21 +287,18 @@ public final class SoundEffect implements IDisposable
 	 * 
 	 * @param disposing
 	 */
-	protected void Dispose(boolean disposing)
+	protected synchronized void Dispose(boolean disposing)
 	{
-		synchronized(this)
-		{
-			if (!this.isDisposed)
-			{				
-				for (SoundEffectInstance sei : children)
-				{
-					sei.Dispose();
-				}
-				
-				// TODO: implement cleanup
-				
-				isDisposed = true;
+		if (!this.isDisposed)
+		{				
+			for (SoundEffectInstance sei : children)
+			{
+				sei.Dispose();
 			}
+			
+			// TODO: implement cleanup
+			
+			isDisposed = true;
 		}
 	}
 	
@@ -269,24 +317,15 @@ public final class SoundEffect implements IDisposable
 	 * @throws System.ArgumentNullException
 	 * stream is null.
 	 */
-	public static SoundEffect FromStream(Stream stream)
-	{
-		if (stream == null)
-			throw new ArgumentNullException("stream");
-		
-		return new SoundEffect(stream);
-	}
-	
-	/**
-	 * Creates a SoundEffect object based on the specified data stream.
-	 * 
-	 * @param stream
-	 * InputStream object that contains the data for this SoundEffect object.
-	 */
 	public static SoundEffect FromStream(InputStream stream)
 	{
-		// TODO: implement (probably wrap the InputStream, or FileInputStream into a MemoryStream)
-		throw new NotImplementedException(); 
+		if (stream == null)
+		{
+			throw new ArgumentNullException("stream");
+		}
+	
+		// TODO: maybe wrap the InputStream, or FileInputStream into a MemoryStream
+		return new SoundEffect(stream);
 	}
 	
 	/**
@@ -304,13 +343,20 @@ public final class SoundEffect implements IDisposable
 	public static TimeSpan GetSampleDuration(int sizeInBytes, int sampleRate, AudioChannels channels)
 	{
 	    if (sizeInBytes < 0)
+	    {
+	    	// TODO: error message
 	        throw new ArgumentException("", "sizeInBytes");
+	    }
 	    
-	    if ((sampleRate < 0x1f40) || (sampleRate > 0xbb80))
+	    if ((sampleRate < 8000) || (sampleRate > 48000))
+	    {
 	        throw new ArgumentOutOfRangeException("sampleRate");
+	    }
 	    
 	    if (sizeInBytes == 0)
+	    {
 	        return TimeSpan.Zero;
+	    }
 	    
 	    return TimeSpan.FromSeconds(sizeInBytes / (sampleRate * channels.getValue()));
 	}
@@ -330,14 +376,21 @@ public final class SoundEffect implements IDisposable
 	public static int GetSampleSizeInBytes(TimeSpan duration, int sampleRate, AudioChannels channels)
 	{
 	    int num = 0;
-	    if ((duration.getTotalMilliseconds() < 0.0) || (duration.getTotalMilliseconds() > 2147483647.0))
-	        throw new ArgumentOutOfRangeException("duration");
 	    
-	    if ((sampleRate < 0x1f40) || (sampleRate > 0xbb80))
+	    if ((duration.getTotalMilliseconds() < 0.0) || (duration.getTotalMilliseconds() > 2147483647.0))
+	    {
+	        throw new ArgumentOutOfRangeException("duration");
+	    }
+	    
+	    if ((sampleRate < 8000) || (sampleRate > 48000))
+	    {
 	        throw new ArgumentOutOfRangeException("sampleRate");
+	    }
 	    
 	    if (duration == TimeSpan.Zero)
+	    {
 	        return 0;
+	    }
 	    
 	    num = duration.getSeconds() * sampleRate * channels.getValue();
 
@@ -352,7 +405,16 @@ public final class SoundEffect implements IDisposable
 	 */
 	public boolean Play()
 	{
-		return this.Play(1f, 0f, 0f);
+		SoundEffectInstance inst = GetPooledInstance();
+    	
+        if (inst == null)
+        {
+            return false;
+        }
+
+        inst.Play();
+
+        return true;
 	}
 	
 	/**
@@ -372,18 +434,19 @@ public final class SoundEffect implements IDisposable
 	 */
     public boolean Play(float volume, float pitch, float pan)
     {
-    	try
-    	{
-    		SoundEffectInstance sei = new SoundEffectInstance(this, true);
-    		sei.setVolume(volume);
-    		sei.setPitch(pitch);
-    		sei.setPan(pan);
-    		sei.Play();
-    		return true;
-    	}
-    	catch (Exception e)
-    	{
-    		return false;
-    	}
+    	SoundEffectInstance inst = GetPooledInstance();
+    	
+        if (inst == null)
+        {
+            return false;
+        }
+
+        inst.setVolume(volume);
+        inst.setPitch(pitch);
+        inst.setPan(pan);
+
+        inst.Play();
+
+        return true;
     }
 }

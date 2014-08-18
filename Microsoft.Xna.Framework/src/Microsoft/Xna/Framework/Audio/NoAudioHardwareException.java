@@ -38,7 +38,7 @@ public class NoAudioHardwareException extends ExternalException
 	 * @param innerException
 	 * The exception that is the cause of the current exception. If the innerException parameter is not a null reference, the current exception is raised in a catch block that handles the inner exception.
 	 */
-	public NoAudioHardwareException(String message, RuntimeException innerException)
+	public NoAudioHardwareException(String message, Throwable innerException)
 	{
 		super(message, innerException);
 	}

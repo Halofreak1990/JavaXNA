@@ -1,5 +1,9 @@
 package Microsoft.Xna.Framework.Audio;
 
+import org.lwjgl.openal.AL10;
+
+import resources.Resources;
+
 import System.*;
 
 /**
@@ -9,7 +13,9 @@ import System.*;
  */
 public final class DynamicSoundEffectInstance extends SoundEffectInstance
 {
-	private AudioFormat format;
+	private AudioChannels channels;
+	private int format;
+	private int sampleRate;
 
 	/**
 	 * Event that occurs when the number of audio capture buffers awaiting playback is less than or equal to two.
@@ -34,28 +40,43 @@ public final class DynamicSoundEffectInstance extends SoundEffectInstance
 		{
 			throw new ArgumentOutOfRangeException("sampleRate");
 		}
-		if ((channels.getValue() < AudioChannels.Mono.getValue()) || (channels.getValue() > AudioChannels.Stereo.getValue()))
-		{
-			throw new ArgumentOutOfRangeException("channels");
-		}
 
-		// TODO: implement
+		this.sampleRate = sampleRate; 
+		this.channels = channels; 
+
+		switch (channels) 
+		{ 
+		case Mono: 
+			this.format = AL10.AL_FORMAT_MONO16; 
+			break; 
+		case Stereo: 
+			this.format = AL10.AL_FORMAT_STEREO16; 
+			break; 
+		default: 
+			break; 
+		}
+	}
+	
+	void OnBufferNeeded()
+	{
+		if (BufferNeeded.hasHandlers())
+		{
+			BufferNeeded.raise(this, EventArgs.Empty);
+		}
 	}
 
 	/**
 	 * 
 	 */
 	@Override
-	protected void Dispose(boolean disposing)
+	protected synchronized void Dispose(boolean disposing)
 	{
-		synchronized (super.VoiceHandleLock)
+		if (!super.IsDisposed())
 		{
-			if (!super.IsDisposed())
-			{
-				// TODO: implement
-			}
-			super.Dispose(disposing);
+			// TODO: implement
 		}
+		
+		super.Dispose(disposing);
 	}
 
 	/**
@@ -69,28 +90,24 @@ public final class DynamicSoundEffectInstance extends SoundEffectInstance
 	 * @throws System.ArgumentException
 	 * 
 	 */
-	public TimeSpan GetSampleDuration(int sizeInBytes)
+	public synchronized TimeSpan GetSampleDuration(int sizeInBytes)
 	{
-		synchronized (super.VoiceHandleLock)
+		if (super.IsDisposed())
 		{
-			if (super.IsDisposed())
-			{
-				throw new ObjectDisposedException(super.getClass().getName(), "This object has already been disposed.");
-			}
-
-			if (sizeInBytes < 0)
-			{
-				throw new ArgumentException("Buffer size cannot be negative.");
-			}
-
-			if (sizeInBytes == 0)
-			{
-				return TimeSpan.Zero;
-			}
-
-			// TODO: get this from AudioFormat
-			throw new NotImplementedException();
+			throw new ObjectDisposedException(super.getClass().getName(), Resources.GetString("Resources.ObjectDisposedException"));
 		}
+
+		if (sizeInBytes < 0)
+		{
+			throw new ArgumentException("Buffer size cannot be negative.");
+		}
+
+		if (sizeInBytes == 0)
+		{
+			return TimeSpan.Zero;
+		}
+
+		return TimeSpan.FromSeconds(sizeInBytes / (sampleRate * channels.getValue()));
 	}
 
 	/**
@@ -104,31 +121,32 @@ public final class DynamicSoundEffectInstance extends SoundEffectInstance
 	 * @throws System.ArgumentOutOfException
 	 *  
 	 */
-	public int GetSampleSizeInBytes(TimeSpan duration)
+	public synchronized int GetSampleSizeInBytes(TimeSpan duration)
 	{
 		int num = 0;
-		synchronized(super.VoiceHandleLock)
+		
+		if (super.IsDisposed())
 		{
-			if (super.IsDisposed())
-				throw new ObjectDisposedException(super.getClass().getName(), "This object has already been disposed.");
+			throw new ObjectDisposedException(super.getClass().getName(), Resources.GetString("Resources.ObjectDisposedException"));
+		}
 			
-			if ((duration.getTotalMilliseconds() < 0.0) || (duration.getTotalMilliseconds() > 2147483647.0))
-			{
+		if ((duration.getTotalMilliseconds() < 0.0) || (duration.getTotalMilliseconds() > 2147483647.0))
+		{
 			throw new ArgumentOutOfRangeException("duration");
-			}
-			if (duration == TimeSpan.Zero)
-			{
-				return 0;
-			}
+		}
+		
+		if (duration == TimeSpan.Zero)
+		{
+			return 0;
+		}
 
-			try
-			{
-				// TODO: implement
-			}
-			catch(OverflowException ex)
-			{
-				throw new ArgumentOutOfRangeException("duration", ex);
-			}
+		try
+		{
+			// TODO: implement
+		}
+		catch(OverflowException ex)
+		{
+			throw new ArgumentOutOfRangeException("duration", ex);
 		}
 
 		return num;
@@ -140,18 +158,15 @@ public final class DynamicSoundEffectInstance extends SoundEffectInstance
 	 * @throws System.ObjectDisposedException
 	 */
 	@Override
-	public void Play()
+	public synchronized void Play()
 	{
-		synchronized(super.VoiceHandleLock)
+		if (super.IsDisposed())
 		{
-			if (super.IsDisposed())
-			{
-				throw new ObjectDisposedException(super.getClass().getName(), "This object has already been disposed.");
-			}
-
-			// TODO: implement
-			throw new NotImplementedException();
+			throw new ObjectDisposedException(super.getClass().getName(), Resources.GetString("Resources.ObjectDisposedException"));
 		}
+
+		// TODO: implement
+		throw new NotImplementedException();
 	}
 
 	/**
@@ -182,40 +197,8 @@ public final class DynamicSoundEffectInstance extends SoundEffectInstance
 	 * @throws System.ArgumentException
 	 * 
 	 */
-	public void SubmitBuffer(byte[] buffer, int offset, int count)
+	public synchronized void SubmitBuffer(byte[] buffer, int offset, int count)
 	{
-		synchronized(super.VoiceHandleLock)
-		{
-			int num = 0;
-
-			if (super.IsDisposed())
-			{
-				throw new ObjectDisposedException(super.getClass().getName(), "This object has already been disposed.");
-			}
-
-			if (((buffer == null) || (buffer.length == 0)) || !this.format.IsAligned(buffer.length))
-			{
-				throw new ArgumentException("Ensure that the buffer length is non-zero and meets the block alignment requirements for the audio format.");
-			}
-			if (((offset < 0) || ( offset >= buffer.length)) || !this.format.IsAligned(offset))
-			{
-				throw new ArgumentException("Offset must be within the buffer boundaries and meet the block alignment requirements for the audio format.");
-			}
-			try
-			{
-				num = offset + count;
-			}
-			catch(OverflowException ex)
-			{
-				throw new ArgumentException("Ensure that count is valid and meets the block alignment requirements for the audio format. Offset and count must define a valid region within the buffer boundaries.", ex);
-			}
-			if (((count <= 0) || (num > buffer.length)) |!this.format.IsAligned(count))
-			{
-				throw new ArgumentException("Ensure that count is valid and meets the block alignment requirements for the audio format. Offset and count must define a valid region within the buffer boundaries.");
-			}
-
-			// TODO: implement
-			throw new NotImplementedException();
-		}
+		BindDataBuffer(buffer, format, count, sampleRate);
 	}
 }
