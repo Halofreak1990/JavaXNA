@@ -92,12 +92,24 @@ public class GamePad
 	 * @return
 	 * true if successful, false otherwise.
 	 */
-	public static boolean SetVibration(PlayerIndex playerIndex, float leftMotor, float rightMotor)
+	public synchronized static boolean SetVibration(PlayerIndex playerIndex, float leftMotor, float rightMotor)
 	{
 		Controller ctrl = Controllers.getController(playerIndex.ordinal());
 		
-		//TODO: Implement
+		int rumblrCount = ctrl.getRumblerCount();
 		
-		return true;
+		if (rumblrCount > 0)
+		{
+			ctrl.setRumblerStrength(0, leftMotor);
+			
+			if (rumblrCount > 1)
+			{
+				ctrl.setRumblerStrength(1, rightMotor);
+			}
+			
+			return true;
+		}
+		
+		return false;
 	}
 }
