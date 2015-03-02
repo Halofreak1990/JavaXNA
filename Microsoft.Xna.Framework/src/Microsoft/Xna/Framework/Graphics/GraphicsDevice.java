@@ -1,5 +1,6 @@
 package Microsoft.Xna.Framework.Graphics;
 
+import java.lang.ref.WeakReference;
 import java.nio.*;
 import java.util.*;
 
@@ -34,6 +35,14 @@ public class GraphicsDevice implements IDisposable
 	private int frameBufferIdentifier;
 	private IndexBuffer currentIndexBuffer;
 	private int currentRenderTargetCount;
+	
+	// Resources may be added to and removed from the list from many threads. 
+	private final Object _resourcesLock = new Object();
+	 
+	// Use WeakReference for the global resources list as we do not know when a resource 
+	// may be disposed and collected. We do not want to prevent a resource from being 
+	// collected by holding a strong reference to it in this list.
+	private final List<WeakReference<?>> _resources = new ArrayList<WeakReference<?>>();
 
 	/**
 	 * 
@@ -207,6 +216,22 @@ public class GraphicsDevice implements IDisposable
 
 		this.textures = new TextureCollection();
 		this.clearColor = Color.Black;
+	}
+	
+	void AddResourceReference(WeakReference<?> resourceReference) 
+	{ 
+		synchronized (_resourcesLock)
+		{
+			_resources.add(resourceReference); 
+		} 
+	}
+	 
+	void RemoveResourceReference(WeakReference<?> resourceReference) 
+	{
+		synchronized (_resourcesLock) 
+		{ 
+			_resources.remove(resourceReference); 
+		} 
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package Microsoft.Xna.Framework.Graphics;
 
+import java.lang.ref.WeakReference;
+
 import System.*;
 
 /**
@@ -10,6 +12,7 @@ import System.*;
 public abstract class GraphicsResource implements IDisposable
 {
 	protected GraphicsDevice _parent;
+	private WeakReference<GraphicsResource> _selfReference;
 	boolean isDisposed;
 	
 	/**
@@ -32,6 +35,25 @@ public abstract class GraphicsResource implements IDisposable
 	public GraphicsDevice getGraphicsDevice()
 	{
 		return _parent;
+	}
+	
+	void setGraphicsDevice(GraphicsDevice value)
+	{
+		if (_parent == value)
+		{
+			return;
+		}
+		
+		if (_parent != null) 
+		{ 
+			_parent.RemoveResourceReference(_selfReference); 
+			_selfReference = null; 
+		}  
+			 
+		_parent = value; 
+			 
+		_selfReference = new WeakReference<GraphicsResource>(this); 
+		_parent.AddResourceReference(_selfReference);
 	}
 	
 	/**
@@ -68,6 +90,7 @@ public abstract class GraphicsResource implements IDisposable
 		{
 			this.finalize();
 		}
+		
 		isDisposed = true;
 	}
 	
@@ -90,10 +113,14 @@ public abstract class GraphicsResource implements IDisposable
 	/**
 	 * Gets a string representation of the current instance.
 	 */
+	@Override
 	public String toString()
 	{
 		if (Name != null || Name != "")
+		{
 			return Name;
+		}
+		
 		return super.toString();
 	}
 }
