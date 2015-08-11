@@ -12,7 +12,7 @@ public class IOException extends SystemException
 	private static final long serialVersionUID = 4173497671292982923L;
 
 	/**
-	 * Initializes a new instance of the {@link IOException} class with its message string set to the empty string ("").
+	 * Initializes a new instance of the {@link System.IO.IOException} class with its message string set to the empty string ("").
 	 */
 	public IOException()
 	{
@@ -20,7 +20,7 @@ public class IOException extends SystemException
 	}
 	
 	/**
-	 * Initializes a new instance of the {@link IOException} class with its message string set to message.
+	 * Initializes a new instance of the {@link System.IO.IOException} class with its message string set to message.
 	 * 
 	 * @param message
 	 * A {@link String} that describes the error. The content of message is intended to be understood by humans. The caller of this constructor is required to ensure that this string has been localized for the current system culture.
@@ -31,7 +31,7 @@ public class IOException extends SystemException
 	}
 
 	/**
-	 * Initializes a new instance of the {@link IOException} class with a specified error message and a reference to the inner exception that is the cause of this exception.
+	 * Initializes a new instance of the {@link System.IO.IOException} class with a specified error message and a reference to the inner exception that is the cause of this exception.
 	 * 
 	 * @param message
 	 * The error message that explains the reason for the exception.
